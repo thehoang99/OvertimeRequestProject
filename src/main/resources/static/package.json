@@ -1,0 +1,20 @@
+{
+  "name": "overtimerequestproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.3",
+    "jquery": "^3.7.1",
+    "jquery-validation": "^1.20.0",
+    "normalize.css": "^8.0.1",
+    "twbs-pagination": "^1.4.2"
+  }
+}

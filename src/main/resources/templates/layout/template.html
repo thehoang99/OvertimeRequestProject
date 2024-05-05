@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi" th:fragment="areas(title, body, script)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title th:replace="${title}"></title>
+    <link rel="stylesheet" th:href="@{/node_modules/normalize.css/normalize.css}">
+    <link rel="stylesheet" th:href="@{/node_modules/bootstrap/dist/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/node_modules/bootstrap-icons/font/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/stylesheet/css/style.css}">
+</head>
+<body class="vh-100 d-flex flex-column">
+<header th:replace="~{layout/header :: headerFragment}"></header>
+
+<main class="w-100 flex-grow-1 h-75">
+    <div class="d-flex flex-row h-100">
+        <div th:replace="~{layout/leftBar :: leftBarFragment}"></div>
+        <div class="w-100 p-4 overflow-auto" id="content-main">
+            <div th:replace="${body}"></div>
+        </div>
+
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="showClaimDetail" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-warning">Claim Detail</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body-content"></div>
+                </div>
+            </div>
+        </div>
+        <div class="position-fixed bottom-0 end-0 m-4 toast-container position-static">
+        </div>
+    </div>
+</main>
+<script th:src="@{/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/node_modules/jquery/dist/jquery.js}"></script>
+<script th:src="@{/node_modules/jquery-validation/dist/jquery.validate.js}"></script>
+<script th:src="@{/node_modules/twbs-pagination/jquery.twbsPagination.js}"></script>
+<script th:src="@{/javascript/main.js}"></script>
+<script th:replace="${script}"></script>
+</body>
+</html>

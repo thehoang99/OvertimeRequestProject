@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>Login Page</title>
+  <link rel="stylesheet" th:href="@{/node_modules/normalize.css/normalize.css}">
+  <link rel="stylesheet" th:href="@{/node_modules/bootstrap/dist/css/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/node_modules/bootstrap-icons/font/bootstrap-icons.css}">
+  <link rel="stylesheet" th:href="@{stylesheet/css/style.css}">
+</head>
+<body>
+<main>
+  <div class="container-fluid vh-100 bg-img-custom d-flex flex-column justify-content-center align-items-center">
+    <div>
+      <p class="text-light display-6">Welcome to my project</p>
+    </div>
+    <div class="bg-custom w-35 p-3 mt-3">
+      <p class="text-light text-center display-6">LOGIN HERE</p>
+      <div class="text-white p-2">
+        <form id="form-login" method="post" th:action="@{/login}">
+          <div class="form-group mb-3">
+            <input class="form-control border-warning border-2 p-2 w-100 outline-0" placeholder="EMAIL" id="form-login__email" name="username" required type="email">
+          </div>
+          <div class="form-group mb-3">
+            <input class="form-control border-warning border-2 p-2 w-100 outline-0" placeholder="PASSWORD" id="form-login__password" name="password" required type="password">
+          </div>
+          <div class="form-group mb-3" id="form-login__message">
+            <small class="p-1 text-danger" th:if="${param.error}">Email or password is incorrect!</small>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input border-warning border-3"  id="form-login__rememberMe" th:name="remember-me" type="checkbox">
+            <label>Remember me</label>
+          </div>
+          <div class="text-center mt-3">
+            <button type="submit" class="btn btn-warning px-5 py-2 text-white">LOGIN</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<script th:src="@{/node_modules/jquery/dist/jquery.js}"></script>
+<script th:src="@{/node_modules/jquery-validation/dist/jquery.validate.js}"></script>
+<script th:src="@{/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/javascript/main.js}"></script>
+</body>
+</html>

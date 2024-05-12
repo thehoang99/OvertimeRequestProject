@@ -16,14 +16,16 @@
       <p class="text-light display-6">Welcome to my project</p>
     </div>
     <div class="bg-custom w-35 p-3 mt-3">
-      <p class="text-light text-center display-6">LOGIN HERE</p>
+      <p class="text-warning text-center display-6">LOGIN HERE</p>
       <div class="text-white p-2">
         <form id="form-login" method="post" th:action="@{/login}">
           <div class="form-group mb-3">
-            <input class="form-control border-warning border-2 p-2 w-100 outline-0" placeholder="EMAIL" id="form-login__email" name="username" required type="email">
+            <input class="form-control border-warning border-2 p-2 w-100 outline-0" id="form-login__email" placeholder="EMAIL"
+                   name="username" required type="email">
           </div>
           <div class="form-group mb-3">
-            <input class="form-control border-warning border-2 p-2 w-100 outline-0" placeholder="PASSWORD" id="form-login__password" name="password" required type="password">
+            <input class="form-control border-warning border-2 p-2 w-100 outline-0" id="form-login__password" placeholder="PASSWORD"
+                   name="password" required type="password">
           </div>
           <div class="form-group mb-3" id="form-login__message">
             <small class="p-1 text-danger" th:if="${param.error}">Email or password is incorrect!</small>

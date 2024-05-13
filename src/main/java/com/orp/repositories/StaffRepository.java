@@ -23,4 +23,5 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
     @Query("SELECT new com.orp.dto.StaffDetailInfoDTO(s.id, s.email, s.department.name, s.role.name) FROM Staff s WHERE s.id = :id")
     StaffDetailInfoDTO findStaffDetailInfoById(Integer id);
 
+
 }

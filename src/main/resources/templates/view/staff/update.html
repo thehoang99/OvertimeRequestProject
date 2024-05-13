@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Update Staff</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="border-bottom border-1 mb-5 p-2">
+            <h1 class="text-warning">Update Staff</h1>
+        </div>
+        <div class="border border-1 rounded-3 mb-5">
+            <div class="border-bottom border-1 bg-body-secondary">
+                <p class="p-2 m-0 text-danger">Staff Information</p>
+            </div>
+            <form class="p-4" id="updateStaffForm" method="post" th:action="@{/staff/update}" th:object="${staff}">
+                <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
+                    <p class="alert alert-danger py-2 px-3" th:text="${errorMsg}"></p>
+                </div>
+                <input th:field="*{id}" type="hidden">
+                <div class="mb-3">
+                    <label class="form-label">Staff Name</label>
+                    <p class="form-control shadow-none bg-body-secondary" th:text="*{name}"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <p class="form-control shadow-none bg-body-secondary" th:text="*{email}"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <select class="form-select shadow-none" th:field="*{departmentId}" required>
+                        <option th:each="department : ${departments}" th:text="${department.name}" th:value="${department.id}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <select class="form-select shadow-none" th:field="*{roleId}" required>
+                        <option th:each="role : ${roles}" th:text="${role.name}" th:value="${role.id}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Salary</label>
+                    <input class="form-control shadow-none" th:field="*{salary}" required>
+                </div>
+                <button class="btn btn-success my-2 py-2 btn-font-size" type="submit">Save</button>
+                <button class="btn btn-warning my-2 py-2 btn-font-size text-white" type="reset">Reset</button>
+                <a class="btn btn-secondary my-2 py-2 btn-font-size" th:href="@{/staff/view}">Close</a>
+            </form>
+        </div>
+    </div>
+</main>
+<script th:src="@{/javascript/staff/update.js}"></script>
+</body>
+</html>

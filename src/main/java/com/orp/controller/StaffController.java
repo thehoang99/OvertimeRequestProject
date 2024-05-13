@@ -34,13 +34,13 @@ public class StaffController {
     @GetMapping("/create")
     public String createStaffUI(Model model) {
         Staff staff = new Staff();
-        createStaffExtract(model, staff);
+        createAndUpdateStaffExtract(model, staff);
         return "view/staff/create";
     }
 
     @PostMapping("/create")
     public String createStaffDB(
-            @ModelAttribute(name = "newStaff") Staff staff,
+            @ModelAttribute(name = "staff") Staff staff,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes
@@ -56,8 +56,8 @@ public class StaffController {
         }
 
         if (isError) {
-            createStaffExtract(model, staff);
-            model.addAttribute("errorMsg", "There are a few errors during employee creation");
+            createAndUpdateStaffExtract(model, staff);
+            model.addAttribute("errorMsg", "There are a few errors during employee creation!");
             return "view/staff/create";
         }
 
@@ -88,11 +88,48 @@ public class StaffController {
         return "view/staff/viewDetail";
     }
 
-    private void createStaffExtract(Model model, Staff staff) {
+    @GetMapping("/update")
+    public String updateStaffUI(
+            @RequestParam(name = "id") Integer id,
+            Model model
+    ) {
+        Staff updateStaff = staffService.findById(id);
+        createAndUpdateStaffExtract(model, updateStaff);
+        return "view/staff/update";
+    }
+
+    @PostMapping("/update")
+    public String updateStaffDB(
+            @ModelAttribute(name = "staff") Staff staff,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ){
+        boolean isError = false;
+        if (result.hasErrors()) {
+            isError = true;
+        } else {
+            Staff staffDB = staffService.update(staff);
+            if (staffDB == null) {
+                isError = true;
+            }
+        }
+
+        if (isError) {
+           createAndUpdateStaffExtract(model, staff);
+            model.addAttribute("errorMsg", "There are a few errors during employee update process!");
+            return "view/staff/update";
+        }
+
+        redirectAttributes.addFlashAttribute("successMsg", "Update the Staff successfully!");
+        return "redirect:/staff/view";
+    }
+
+    private void createAndUpdateStaffExtract(Model model, Staff staff) {
         List<Department> departments = departmentService.findAll();
         List<Role> roles = roleService.findAll();
 
-        model.addAttribute("newStaff", staff);
+        model.addAttribute("staff", staff);
         model.addAttribute("departments", departments);
         model.addAttribute("roles", roles);
     }

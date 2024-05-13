@@ -12,7 +12,7 @@
         <div class="border-bottom border-1 bg-body-secondary">
             <p class="p-2 m-0 text-danger">Staff Information</p>
         </div>
-        <form class="p-4" id="createStaffForm" method="post" th:action="@{/staff/create}" th:object="${newStaff}">
+        <form class="p-4" id="createStaffForm" method="post" th:action="@{/staff/create}" th:object="${staff}">
             <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
                 <p class="alert alert-danger py-2 px-3" th:text="${errorMsg}"></p>
             </div>

@@ -18,4 +18,8 @@ public interface StaffService {
 
     StaffDetailInfoDTO findStaffDetailInfoById(Integer id);
 
+    Staff findById(Integer id);
+
+    Staff update(Staff staff);
+
 }

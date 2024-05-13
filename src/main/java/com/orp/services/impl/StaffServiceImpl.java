@@ -52,4 +52,27 @@ public class StaffServiceImpl implements StaffService {
         return staffRepository.findStaffDetailInfoById(id);
     }
 
+    @Override
+    public Staff findById(Integer id) {
+        return staffRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Staff update(Staff staff) {
+        if (staff == null) {
+            return null;
+        }
+
+        Staff staffDB = staffRepository.findById(staff.getId()).orElse(null);
+        if (staffDB == null) {
+            return null;
+        }
+
+        staffDB.setDepartmentId(staff.getDepartmentId());
+        staffDB.setRoleId(staff.getRoleId());
+        staffDB.setSalary(staff.getSalary());
+
+        return staffRepository.save(staffDB);
+    }
+
 }

@@ -1,12 +1,19 @@
 package com.orp.services.impl;
 
+import com.orp.dto.StaffDetailInfoDTO;
+import com.orp.dto.StaffIdNameDTO;
 import com.orp.model.Staff;
 import com.orp.repositories.StaffRepository;
 import com.orp.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+
+import java.util.List;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -34,4 +41,15 @@ public class StaffServiceImpl implements StaffService {
 
         return staffRepository.save(staff);
     }
+
+    @Override
+    public List<StaffIdNameDTO> findAllName() {
+        return staffRepository.findAllName();
+    }
+
+    @Override
+    public StaffDetailInfoDTO findStaffDetailInfoById(Integer id) {
+        return staffRepository.findStaffDetailInfoById(id);
+    }
+
 }

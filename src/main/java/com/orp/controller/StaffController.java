@@ -1,5 +1,7 @@
 package com.orp.controller;
 
+import com.orp.dto.StaffDetailInfoDTO;
+import com.orp.dto.StaffIdNameDTO;
 import com.orp.model.Department;
 import com.orp.model.Role;
 import com.orp.model.Staff;
@@ -7,13 +9,11 @@ import com.orp.services.DepartmentService;
 import com.orp.services.RoleService;
 import com.orp.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -57,12 +57,35 @@ public class StaffController {
 
         if (isError) {
             createStaffExtract(model, staff);
-            model.addAttribute("errorMsg", "Create a new Staff is failed!");
+            model.addAttribute("errorMsg", "There are a few errors during employee creation");
             return "view/staff/create";
         }
 
         redirectAttributes.addFlashAttribute("successMsg", "Create a new Staff successfully!");
         return "redirect:/staff/view";
+    }
+
+    @GetMapping("/view")
+    public String viewStaff(Model model) {
+        List<StaffIdNameDTO> staffNameList = staffService.findAllName();
+        if (!staffNameList.isEmpty()) {
+            model.addAttribute("nameList", staffNameList);
+        }
+        return "view/staff/view";
+    }
+
+    @GetMapping("/viewDetail")
+    public String staffDetailInfo(
+            @RequestParam(name = "id", required = false) Integer id,
+            Model model
+    ) {
+        if (id != null) {
+            StaffDetailInfoDTO staffDetailInfoDTO = staffService.findStaffDetailInfoById(id);
+            if (staffDetailInfoDTO != null) {
+                model.addAttribute("staffDetail", staffDetailInfoDTO);
+            }
+        }
+        return "view/staff/viewDetail";
     }
 
     private void createStaffExtract(Model model, Staff staff) {

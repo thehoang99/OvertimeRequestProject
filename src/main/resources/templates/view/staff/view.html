@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Staff</title>
+</head>
+<body>
+<main>
+   <div>
+       <div class="border-bottom border-1 mb-5 p-2">
+           <h1 class="text-warning">View Staff</h1>
+       </div>
+       <div class="border border-1 rounded-3 mb-5">
+           <div class="border-bottom border-1 bg-body-secondary">
+               <p class="p-2 m-0 text-danger">Staff Information</p>
+           </div>
+           <div class="p-4" id="viewStaff">
+               <div class="mb-3" th:if="${not #strings.isEmpty(successMsg)}">
+                   <p class="alert alert-success py-2 px-3" th:text="${successMsg}"></p>
+               </div>
+               <div>
+                   <table class="w-100">
+                       <tr>
+                           <td class="col-1">
+                               <label class="form-label font-weight-bold mr-2 col-2 w-100">Staff Name:</label>
+                           </td>
+                           <td class="col-11">
+                                <select class="form-select d-inline shadow-none col-6" id="staffName" name="name">
+                                    <option th:each="staff : ${nameList}" th:text="${staff.name}" th:value="${staff.id}"></option>
+                                </select>
+                           </td>
+                       </tr>
+                   </table>
+                   <div id="viewDetail"></div>
+               </div>
+           </div>
+       </div>
+   </div>
+</main>
+<script th:src="@{/javascript/staff/view.js}"></script>
+</body>
+</html>

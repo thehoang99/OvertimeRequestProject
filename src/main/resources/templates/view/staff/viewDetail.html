@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<div th:object="${staffDetail}">
+    <table class="w-100 mb-3">
+        <tr>
+            <td class="col-1">
+                <span class="form-label font-weight-bold mr-2">Email:</span>
+            </td>
+            <td class="col-11">
+                <span  class="form-control border border-0" th:text="*{email}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-1">
+                <span class="form-label font-weight-bold mr-2">Department:</span>
+            </td>
+            <td class="col-11">
+                <span  class="form-control border border-0" th:text="*{departmentName}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-1">
+                <span class="form-label font-weight-bold mr-2">Role:</span>
+            </td>
+            <td class="col-11">
+                <span  class="form-control border border-0" th:text="*{roleName}"></span>
+            </td>
+        </tr>
+    </table>
+    <a class="btn btn-success my-2 py-2" th:href="@{/staff/create}">Create</a>
+<!--    <a class="btn btn-warning text-white my-2 py-2" th:href="@{/staff/update(id=*{id})}">Edit</a>-->
+</div>
+</html>

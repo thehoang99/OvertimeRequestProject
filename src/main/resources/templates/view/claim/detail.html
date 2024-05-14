@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<div th:object="${claim}">
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>Staff id</th>
+            <td th:text="*{working.staffId}"></td>
+        </tr>
+        <tr>
+            <th>Staff name</th>
+            <td th:text="*{working.staff.name}"></td>
+        </tr>
+        <tr>
+            <th>Staff email</th>
+            <td th:text="*{working.staff.email}"></td>
+        </tr>
+        <tr>
+            <th>Staff department</th>
+            <td th:text="*{working.staff.department.name}"></td>
+        </tr>
+        <tr>
+            <th>Project Name</th>
+            <td th:text="*{working.project.name}"></td>
+        </tr>
+        <tr>
+            <th>Project start date</th>
+            <td th:text="*{#temporals.format(working.project.startDate, 'dd/MM/yyyy')}"></td>
+        </tr>
+        <tr>
+            <th>Project end date</th>
+            <td th:text="*{#temporals.format(working.project.endDate, 'dd/MM/yyyy')}"></td>
+        </tr>
+        <tr>
+            <th>Claim status</th>
+            <td th:text="*{status}"></td>
+        </tr>
+        <tr>
+            <th>Claim date</th>
+            <td th:text="*{#temporals.format(date, 'dd/MM/yyyy')}"></td>
+        </tr>
+        <tr>
+            <th>Claim from time</th>
+            <td th:text="*{fromTime}"></td>
+        </tr>
+        <tr>
+            <th>Claim to time</th>
+            <td th:text="*{toTime}"></td>
+        </tr>
+        <tr>
+            <th>Note</th>
+            <td th:text="*{remarks}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

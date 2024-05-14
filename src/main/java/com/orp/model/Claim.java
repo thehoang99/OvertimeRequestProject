@@ -28,7 +28,7 @@ public class Claim {
     private LocalDate date;
 
     @Column(name = "from_time")
-    private LocalDate fromTime;
+    private LocalTime fromTime;
 
     @Column(name = "to_time")
     private LocalTime toTime;

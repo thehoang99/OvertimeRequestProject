@@ -1,5 +1,10 @@
 $(document).ready(function () {
+    let startDate = $('.startDate');
+    let endDate = $('.endDate');
+    let duration = $('.duration');
+
     highlightSelectedButton();
+    calculateDuration();
 
     $('#form-login').validate({
         errorPlacement: function (error, element) {
@@ -87,5 +92,19 @@ $(document).ready(function () {
     //         }
     //     })
     // }
+
+    function calculateDuration() {
+        let startDateObj = new Date(startDate.val());
+        let endDateObj = new Date(endDate.val());
+
+        if (!isNaN(startDateObj.getDate()) && !isNaN(endDateObj.getDate())) {
+            let timeDuration = endDateObj - startDateObj;
+            let dateDuration = Math.ceil(timeDuration / (24 * 60 * 60 * 1000));
+            duration.text(`${dateDuration + 1} days`);
+        } else {
+            duration.text('');
+        }
+    }
+
 
 });

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Claim for Project manager</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="border-bottom border-1 mb-5 p-2">
+            <h1 class="text-warning" th:text="${titleName}"></h1>
+        </div>
+        <table class="table table-bordered" th:if="${totalPage > 0}">
+            <thead>
+            <tr class="text-center">
+                <th class="bg-body-secondary">Claim Id</th>
+                <th class="bg-body-secondary">Claim Date</th>
+                <th class="bg-body-secondary">Staff Name</th>
+                <th class="bg-body-secondary">Project Name</th>
+                <th class="bg-body-secondary">Total Overtime Hours</th>
+                <th class="bg-body-secondary">Action</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            <th:block th:each="c : ${claims}">
+                <tr data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
+                    <td th:text="${c.id}"></td>
+                    <td th:text="${#temporals.format(c.date, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${c.working.staff.name}"></td>
+                    <td th:text="${c.working.project.name}"></td>
+                    <td>
+                        <span th:if="${c.totalHours} == 1" th:text="${c.totalHours} + ' hour'"></span>
+                        <span th:if="${c.totalHours} > 1" th:text="${c.totalHours} + ' hours'"></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" id="btn-claimDetail" type="button"
+                                data-bs-target="#showClaimDetail" data-bs-toggle="modal" th:data-id="${c.id}">
+                            Detail
+                        </button>
+                        <a class="btn btn-success" th:href="@{/claim/pendingApproval/review(claimId=${c.id})}"
+                                th:if="${#strings.equals(c.status, 'PENDING')}">
+                            Review
+                        </a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <div th:if="${totalPage == 0}">
+            <p class="text-danger">No data available!</p>
+        </div>
+
+
+    </div>
+</main>
+<script th:src="@{/javascript/claim/total.js}"></script>
+</body>
+</html>

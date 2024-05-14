@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Claim</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="border-bottom border-1 mb-5 p-2">
+            <h1 class="text-warning" th:text="${titleName}"></h1>
+        </div>
+        <table class="table table-bordered" th:if="${totalPage > 0}">
+            <thead>
+                <tr class="text-center">
+                    <th class="bg-body-secondary">Claim Id</th>
+                    <th class="bg-body-secondary">Claim Date</th>
+                    <th class="bg-body-secondary">Project Name</th>
+                    <th class="bg-body-secondary">Project Duration</th>
+                    <th class="bg-body-secondary">Total Overtime Hours</th>
+                    <th class="bg-body-secondary">Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <th:block th:each="c : ${claims}">
+                    <tr data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${#temporals.format(c.date, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${c.working.project.name}"></td>
+                        <td>
+                            <input class="startDate" hidden="hidden" th:value="${c.working.project.startDate}">
+                            <input class="endDate" hidden="hidden" th:value="${c.working.project.endDate}">
+                            <span class="duration"></span>
+                        </td>
+                        <td>
+                            <span th:if="${c.totalHours} == 1" th:text="${c.totalHours} + ' hour'"></span>
+                            <span th:if="${c.totalHours} > 1" th:text="${c.totalHours} + ' hours'"></span>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" id="btn-claimDetail" type="button"
+                                    data-bs-target="#showClaimDetail" data-bs-toggle="modal" th:data-id="${c.id}">
+                                Detail
+                            </button>
+                            <button class="btn btn-success" id="btn-submitClaim" type="button"
+                                    data-bs-target="#submitClaim" data-bs-toggle="modal" th:data-id="${c.id}"
+                                    th:if="${#strings.equals(c.status, 'DRAFT')}">
+                                Submit
+                            </button>
+                            <a class="btn btn-warning text-white" th:if="${#strings.equals(c.status, 'DRAFT')}"
+                                    th:href="@{/claim/myDraft/update(claimId=${c.id})}">
+                                Update
+                            </a>
+                            <button class="btn btn-danger" id="btn-cancelClaim" type="button"
+                                    data-bs-target="#cancelClaim" data-bs-toggle="modal" th:data-id="${c.id}"
+                                    th:if="${#strings.equals(c.status, 'DRAFT')}">
+                                Cancel
+                            </button>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+        <div th:if="${totalPage == 0}">
+            <p class="text-danger">No data available!</p>
+        </div>
+
+
+    </div>
+</main>
+<script th:src="@{/javascript/claim/total.js}"></script>
+</body>
+</html>

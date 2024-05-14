@@ -141,6 +141,20 @@ public class ClaimController {
         return  "view/claim/finance/financeClaim";
     }
 
+    @GetMapping("/detail")
+    public String showDetail(
+            @RequestParam Integer id,
+            Model model
+    ){
+        if (id != null) {
+            Claim claim = claimService.detail(id);
+            if (claim != null) {
+                model.addAttribute("claim", claim);
+            }
+        }
+        return "view/claim/detail";
+    }
+
     private void myClaimExtract(Model model, String titleName, List<Status> statusList, Integer pageNumber, Integer pageSize) {
         Integer staffId = CurrentUserUtils.getStaffInfo().getId();
         Page<Claim> claims = claimService.findClaimByStaffIdAndStatus(staffId, statusList, pageNumber, pageSize);

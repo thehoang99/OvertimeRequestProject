@@ -63,7 +63,29 @@
             <p class="text-danger">No data available!</p>
         </div>
 
-
+        <div th:if="${totalPage > 0}">
+            <nav class="m-3">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item" th:if="${currentPage > 1}">
+                        <a class="page-link" th:href="@{'?pageNumber='+1}">First</a>
+                    </li>
+                    <li class="page-item" th:if="${currentPage > 1}">
+                        <a class="page-link" th:href="@{'?pageNumber='+${currentPage - 1}}">Previous</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPage)}"
+                        th:classappend="${currentPage == i ? 'active' : ''}"
+                        th:if="${i <= currentPage + 2 && i >= currentPage - 2 && totalPage > 1}">
+                        <a class="page-link" th:href="@{'?pageNumber='+${i}}" th:text="${i}"></a>
+                    </li>
+                    <li class="page-item" th:if="${currentPage < totalPage}">
+                        <a class="page-link" th:href="@{'?pageNumber='+${currentPage + 1}}">Next</a>
+                    </li>
+                    <li class="page-item" th:if="${currentPage < totalPage}">
+                        <a class="page-link" th:href="@{'?pageNumber='+${totalPage}}">End</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </main>
 <script th:src="@{/javascript/claim/total.js}"></script>

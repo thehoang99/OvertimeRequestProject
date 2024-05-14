@@ -14,4 +14,6 @@ public interface ClaimService {
 
     Page<Claim> findByStatus(Status status, Integer pageNumber, Integer pageSize);
 
+    Claim detail(Integer claimId);
+
 }

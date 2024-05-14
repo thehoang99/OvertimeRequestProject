@@ -35,4 +35,9 @@ public class ClaimServiceImpl implements ClaimService {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
         return claimRepository.findByStatus(status, pageable);
     }
+
+    @Override
+    public Claim detail(Integer claimId) {
+        return claimRepository.findById(claimId).orElse(null);
+    }
 }

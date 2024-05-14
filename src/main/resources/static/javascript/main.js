@@ -1,11 +1,4 @@
 $(document).ready(function () {
-    let startDate = $('.startDate');
-    let endDate = $('.endDate');
-    let duration = $('.duration');
-
-    highlightSelectedButton();
-    calculateDuration();
-
     $('#form-login').validate({
         errorPlacement: function (error, element) {
            error.insertAfter(element);
@@ -51,6 +44,7 @@ $(document).ready(function () {
             }
         })
     }
+    highlightSelectedButton();
 
     const patterns = {
         "btn-myClaims": [/\/claim\/my/, /\/claim\/update/],
@@ -94,6 +88,10 @@ $(document).ready(function () {
     // }
 
     function calculateDuration() {
+        let startDate = $('.startDate');
+        let endDate = $('.endDate');
+        let duration = $('.duration');
+
         let startDateObj = new Date(startDate.val());
         let endDateObj = new Date(endDate.val());
 
@@ -105,6 +103,6 @@ $(document).ready(function () {
             duration.text('');
         }
     }
-
+    calculateDuration();
 
 });

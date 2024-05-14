@@ -3,13 +3,16 @@ package com.orp.controller;
 import com.orp.model.Claim;
 import com.orp.model.Staff;
 import com.orp.model.Status;
+import com.orp.model.Working;
 import com.orp.services.ClaimService;
+import com.orp.services.WorkingService;
 import com.orp.utils.CurrentUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,6 +24,39 @@ public class ClaimController {
 
     @Autowired
     private ClaimService claimService;
+
+    @Autowired
+    private WorkingService workingService;
+
+    @GetMapping("/create")
+    public String createUI(Model model) {
+        Claim claim = new Claim();
+        claim.setStatus(Status.DRAFT);
+
+        Staff currentStaff = CurrentUserUtils.getStaffInfo();
+        List<Working> workings = workingService.findByStaffId(currentStaff.getId());
+
+        model.addAttribute("claim", claim);
+        model.addAttribute("workings", workings);
+        model.addAttribute("currentStaff", currentStaff);
+
+        return "view/claim/create";
+    }
+
+    @PostMapping("/create")
+    public String createDB() {
+        return "view/claim/create";
+    }
+
+    @GetMapping("/workingDetail")
+    public String showWorkingDetail(
+            @RequestParam Integer workingId,
+            Model model
+    ) {
+        Working working = workingService.detail(workingId);
+        model.addAttribute("working", working);
+        return "view/claim/workingDetail";
+    }
 
     @GetMapping("/myDraft")
     public String myDraft(

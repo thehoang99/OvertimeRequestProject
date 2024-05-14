@@ -11,4 +11,6 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
 
     List<Working> findByStaffIdAndJobRankId(Integer staffId, Integer jobRankId);
 
+    List<Working> findByStaffId(Integer staffId);
+
 }

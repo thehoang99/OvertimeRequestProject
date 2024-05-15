@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<div th:object="${working}">
+    <div class="row">
+        <div class="col mb-3">
+            <label class="form-label">Role In Project</label>
+            <input class="form-control shadow-none" disabled th:value="*{jobRank.name}">
+        </div>
+        <div class="col mb-3">
+            <label class="form-label">Date Of Joining Project</label>
+            <input class="form-control shadow-none" id="createClaim__joinedDate" disabled th:value="*{startDate}" type="date">
+        </div>
+        <div class="col mb-3">
+            <label class="form-label">Date Of Left Project</label>
+            <input class="form-control shadow-none" id="createClaim__leftDate" disabled th:value="*{endDate}" type="date">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mb-3">
+            <label class="form-label">Project Start Date</label>
+            <input class="form-control shadow-none" id="createClaim__startDate" disabled th:value="*{project.startDate}" type="date">
+        </div>
+        <div class="col mb-3">
+            <label class="form-label">Project End Date</label>
+            <input class="form-control shadow-none" id="createClaim__endDate" disabled th:value="*{project.endDate}" type="date">
+        </div>
+        <div class="col mb-3">
+            <label class="form-label">Project Duration</label>
+            <input class="form-control shadow-none" id="createClaim__duration" disabled type="text">
+        </div>
+    </div>
+</div>
+</html>

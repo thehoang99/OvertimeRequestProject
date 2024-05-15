@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Claim</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="border-bottom border-1 mb-5 p-2 ">
+            <h1 class="text-warning">Add Claim</h1>
+        </div>
+        <div class="border border-1 rounded-3 mb-5 ">
+            <div class="border-bottom border-1 bg-body-secondary">
+                <p class="p-2 m-0 text-danger">Claim Information</p>
+            </div>
+            <div class="p-3 w70">
+                <form id="createClaimForm" method="post" th:action="@{/claim/create}" th:object="${claim}">
+                    <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
+                        <p class="alert alert-danger py-2 px-3" th:text="${errorMsg}"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <input class="form-control shadow-none bg-body-secondary" th:field="*{status}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Id</label>
+                        <input class="form-control shadow-none bg-body-secondary" th:value="${currentStaff.id}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Name</label>
+                        <input class="form-control shadow-none bg-body-secondary" th:value="${currentStaff.name}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Department</label>
+                        <input class="form-control shadow-none bg-body-secondary" th:value="${currentStaff.department.name}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Project Name</label>
+                        <select class="form-select shadow-none" id="createClaim__projectName" th:field="*{workingId}">
+                            <option th:each="working : ${workings}" th:text="${working.project.name}" th:value="${working.id}"></option>
+                        </select>
+                    </div>
+
+                    <div class="container" id="workingDetail"></div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Choose Claim Date</label>
+                                <input  class="form-control shadow-none" id="creatClaim__date" name="date" th:value="*{date}" required type="date">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Day Of Year</label>
+                                <input  class="form-control shadow-none" id="creatClaim__day" disabled type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <label class="form-label">From Time</label>
+                                <input class="form-control shadow-none" id="creatClaim__fromTime" name="fromTime" th:value="*{fromTime}" required type="time">
+                                <div class="text-danger" th:errors="*{fromTime}" th:if="${#fields.hasErrors('fromTime')}"></div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label class="form-label">To Time</label>
+                                <input class="form-control shadow-none" id="creatClaim__toTime" name="toTime" th:value="*{toTime}" required type="time">
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label class="form-label">Total Overtime Hours</label>
+                                <input class="form-control shadow-none bg-body-secondary" id="creatClaim__totalHours"
+                                       name="totalHours" th:value="*{totalHours}" required readonly type="number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Remarks</label>
+                        <textarea class="form-control shadow-none" th:field="*{remarks}" required style="resize: vertical; overflow: auto"></textarea>
+                    </div>
+
+                    <button class="btn btn-success my-2 py-2 btn-font-size" type="submit">Save</button>
+                    <button class="btn btn-warning my-2 py-2 btn-font-size text-white" type="reset">Reset</button>
+                    <a class="btn btn-secondary my-2 py-2 btn-font-size" th:href="@{/claim/myDraft}">Close</a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/javascript/claim/create.js}"></script>
+</body>
+</html>

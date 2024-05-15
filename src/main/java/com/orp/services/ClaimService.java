@@ -4,6 +4,7 @@ import com.orp.model.Claim;
 import com.orp.model.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface ClaimService {
     Page<Claim> findByStatus(Status status, Integer pageNumber, Integer pageSize);
 
     Claim detail(Integer claimId);
+
+    Claim save(Claim claim, BindingResult result);
 
 }

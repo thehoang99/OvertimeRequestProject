@@ -21,28 +21,28 @@
             </tr>
             </thead>
             <tbody class="text-center">
-            <th:block th:each="c : ${claims}">
-                <tr data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
-                    <td th:text="${c.id}"></td>
-                    <td th:text="${#temporals.format(c.date, 'dd/MM/yyyy')}"></td>
-                    <td th:text="${c.working.staff.name}"></td>
-                    <td th:text="${c.working.project.name}"></td>
-                    <td>
-                        <span th:if="${c.totalHours} == 1" th:text="${c.totalHours} + ' hour'"></span>
-                        <span th:if="${c.totalHours} > 1" th:text="${c.totalHours} + ' hours'"></span>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary" id="btn-claimDetail" type="button"
-                                data-bs-target="#showClaimDetail" data-bs-toggle="modal" th:data-id="${c.id}">
-                            Detail
-                        </button>
-                        <a class="btn btn-success" th:href="@{/claim/pendingApproval/review(claimId=${c.id})}"
-                                th:if="${#strings.equals(c.status, 'PENDING')}">
-                            Review
-                        </a>
-                    </td>
-                </tr>
-            </th:block>
+                <th:block th:each="c : ${claims}">
+                    <tr data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${#temporals.format(c.date, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${c.working.staff.name}"></td>
+                        <td th:text="${c.working.project.name}"></td>
+                        <td>
+                            <span th:if="${c.totalHours} == 1" th:text="${c.totalHours} + ' hour'"></span>
+                            <span th:if="${c.totalHours} > 1" th:text="${c.totalHours} + ' hours'"></span>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" id="btn-claimDetail" type="button"
+                                    data-bs-target="#showClaimDetail" data-bs-toggle="modal" th:data-id="${c.id}">
+                                Detail
+                            </button>
+                            <a class="btn btn-success" th:href="@{/claim/pendingApproval/review(claimId=${c.id})}"
+                                    th:if="${#strings.equals(c.status, 'PENDING')}">
+                                Review
+                            </a>
+                        </td>
+                    </tr>
+                </th:block>
             </tbody>
         </table>
         <div th:if="${totalPage == 0}">

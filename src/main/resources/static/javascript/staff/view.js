@@ -1,4 +1,12 @@
 $(document).ready(function () {
+    function loadDetailInfo(staffId) {
+        $.ajax({
+            url:  "/staff/viewDetail?id="+staffId,
+            success: function (data) {
+                $('#viewDetail').html(data);
+            }
+        });
+    }
 
     let staffNameField = $('#staffName');
     loadDetailInfo(staffNameField.val());
@@ -7,14 +15,5 @@ $(document).ready(function () {
         let staffId = this.value;
         loadDetailInfo(staffId);
     })
-
-    function loadDetailInfo(staffId) {
-        $.ajax({
-           url:  "/staff/viewDetail?id="+staffId,
-            success: function (data) {
-               $('#viewDetail').html(data);
-            }
-        });
-    }
 
 });

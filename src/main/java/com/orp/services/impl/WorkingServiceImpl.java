@@ -21,4 +21,14 @@ public class WorkingServiceImpl implements WorkingService {
         }
         return false;
     }
+
+    @Override
+    public List<Working> findByStaffId(Integer staffId) {
+        return workingRepository.findByStaffId(staffId);
+    }
+
+    @Override
+    public Working detail(Integer workingId) {
+        return workingRepository.findById(workingId).orElse(null);
+    }
 }

@@ -87,21 +87,25 @@ $(document).ready(function () {
     //     })
     // }
 
+
     function calculateDuration() {
-        let startDate = $('.startDate');
-        let endDate = $('.endDate');
-        let duration = $('.duration');
+        $('.myClaim-row').each(function () {
+            let startDateVal = $(this).find('.startDate').val();
+            let endDateVal = $(this).find('.endDate').val();
+            let duration = $(this).find('.duration');
 
-        let startDateObj = new Date(startDate.val());
-        let endDateObj = new Date(endDate.val());
+            let startDateObj = new Date(startDateVal);
+            let endDateObj = new Date(endDateVal);
 
-        if (!isNaN(startDateObj.getDate()) && !isNaN(endDateObj.getDate())) {
-            let timeDuration = endDateObj - startDateObj;
-            let dateDuration = Math.ceil(timeDuration / (24 * 60 * 60 * 1000));
-            duration.text(`${dateDuration + 1} days`);
-        } else {
-            duration.text('');
-        }
+            if (!isNaN(startDateObj.getTime()) && !isNaN(endDateObj.getTime())) {
+                let timeDuration = endDateObj - startDateObj;
+                let dateDuration = Math.ceil(timeDuration / (24 * 60 * 60 * 1000));
+                duration.text(`${dateDuration + 1} days`);
+            } else {
+                duration.text('');
+            }
+
+        });
     }
     calculateDuration();
 

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -33,5 +35,15 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
 
     @Query("SELECT c FROM Claim c WHERE c.status = :status ORDER BY c.id DESC")
     Page<Claim> findByStatus(Status status, Pageable pageable);
+
+    @Query("""
+        SELECT c
+        FROM Claim c
+        WHERE c.working.staffId = :staffId
+        AND c.status NOT IN :statusList
+        AND c.date = :claimDate
+        AND ((c.fromTime BETWEEN :fromTime AND :toTime) OR (c.toTime BETWEEN :fromTime AND :toTime) OR (c.fromTime < :fromTime AND c.toTime > :toTime))
+    """)
+    List<Claim> findClaimByStaffIdAndDateAndTime(Integer staffId, List<Status> statusList, LocalDate claimDate, LocalTime fromTime, LocalTime  toTime);
 
 }

@@ -22,7 +22,7 @@
             </thead>
             <tbody class="text-center">
                 <th:block th:each="c : ${claims}">
-                    <tr data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
+                    <tr class="myClaim-row" data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
                         <td th:text="${c.id}"></td>
                         <td th:text="${#temporals.format(c.date, 'dd/MM/yyyy')}"></td>
                         <td th:text="${c.working.project.name}"></td>

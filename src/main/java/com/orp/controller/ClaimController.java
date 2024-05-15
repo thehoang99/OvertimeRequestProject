@@ -11,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -33,19 +32,34 @@ public class ClaimController {
         Claim claim = new Claim();
         claim.setStatus(Status.DRAFT);
 
-        Staff currentStaff = CurrentUserUtils.getStaffInfo();
-        List<Working> workings = workingService.findByStaffId(currentStaff.getId());
-
-        model.addAttribute("claim", claim);
-        model.addAttribute("workings", workings);
-        model.addAttribute("currentStaff", currentStaff);
-
+        createClaimExtract(model, claim);
         return "view/claim/create";
     }
-
     @PostMapping("/create")
-    public String createDB() {
-        return "view/claim/create";
+    public String createDB(
+            @ModelAttribute(name = "claim") Claim claim,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        boolean isError = false;
+        if (result.hasErrors()) {
+            isError = true;
+        } else {
+            Claim claimDB = claimService.save(claim, result);
+            if (claimDB == null) {
+                isError = true;
+            }
+        }
+
+        if (isError) {
+            createClaimExtract(model, claim);
+            model.addAttribute("errorMsg", "There are a few errors during claim creation!");
+            return "view/claim/create";
+        }
+
+        redirectAttributes.addFlashAttribute("successMsg", "Create a new Claim successfully!");
+        return "redirect:/claim/myDraft";
     }
 
     @GetMapping("/workingDetail")
@@ -208,6 +222,15 @@ public class ClaimController {
         model.addAttribute("titleName", titleName);
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPage", claims.getTotalPages());
+    }
+
+    private void createClaimExtract(Model model, Claim claim) {
+        Staff currentStaff = CurrentUserUtils.getStaffInfo();
+        List<Working> workings = workingService.findByStaffId(currentStaff.getId());
+
+        model.addAttribute("claim", claim);
+        model.addAttribute("workings", workings);
+        model.addAttribute("currentStaff", currentStaff);
     }
 
 

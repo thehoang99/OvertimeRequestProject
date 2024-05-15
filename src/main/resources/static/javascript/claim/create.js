@@ -83,6 +83,9 @@ $(document).ready(function () {
                 required: true,
                 isAfterFromTime: true
             },
+            totalHours: {
+                required: true
+            },
             remarks: {
                 required: true
             }
@@ -99,6 +102,9 @@ $(document).ready(function () {
             toTime: {
                 required: "To time must be filled",
                 isAfterFromTime: "To time must be after From time",
+            },
+            totalHours: {
+                required: "Total Overtime Hours must be filled"
             },
             remarks: {
                 required: "Remarks must be filled"

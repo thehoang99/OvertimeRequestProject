@@ -19,4 +19,6 @@ public interface ClaimService {
 
     Claim save(Claim claim, BindingResult result);
 
+    boolean cancel(Integer claimId, Integer staffId);
+
 }

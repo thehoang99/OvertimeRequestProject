@@ -11,4 +11,9 @@ $(document).ready(function () {
        })
     });
 
+    $(document).on('click', '#btn-cancelClaim', function () {
+       let claimId = $(this).attr('data-id');
+       $('.btn-okModal').attr('href', '/claim/cancel?id='+claimId);
+    });
+
 });

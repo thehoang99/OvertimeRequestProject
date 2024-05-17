@@ -205,6 +205,25 @@ public class ClaimController {
         return "view/claim/detail";
     }
 
+    @GetMapping("/cancel")
+    public String cancelClaim(
+            @RequestParam(name = "id", required = false) Integer claimId,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (claimId != null) {
+            Integer staffId = CurrentUserUtils.getStaffInfo().getId();
+            boolean isCancel = claimService.cancel(claimId, staffId);
+            if (isCancel) {
+                redirectAttributes.addFlashAttribute("successMsg", "Cancelled the claim successfully!");
+                return "redirect:/claim/myDraft";
+            }
+        }
+
+        model.addAttribute("errorMsg", "There are a few errors during claim cancel process!");
+        return "view/claim/myClaim";
+    }
+
     private void myClaimExtract(Model model, String titleName, List<Status> statusList, Integer pageNumber, Integer pageSize) {
         Integer staffId = CurrentUserUtils.getStaffInfo().getId();
         Page<Claim> claims = claimService.findClaimByStaffIdAndStatus(staffId, statusList, pageNumber, pageSize);
@@ -232,6 +251,5 @@ public class ClaimController {
         model.addAttribute("workings", workings);
         model.addAttribute("currentStaff", currentStaff);
     }
-
 
 }

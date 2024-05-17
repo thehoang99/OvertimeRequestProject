@@ -70,8 +70,43 @@ public class ClaimServiceImpl implements ClaimService {
             return null;
         }
 
-        String auditTrail = "Created on " + LocalDateTime.now() + " by " + CurrentUserUtils.getStaffInfo().getName();
-        claim.setAuditTrail(auditTrail);
+        addAuditTrailExtract("Created on: ", claim);
         return claimRepository.save(claim);
     }
+
+    @Override
+    public boolean cancel(Integer claimId, Integer staffId) {
+        if (claimId == null || staffId == null) {
+            return false;
+        }
+
+        Claim claim = claimRepository.findClaimByIdAndStaffId(claimId, staffId);
+
+        if (claim == null) {
+            return false;
+        }
+
+        Status status = claim.getStatus();
+        if (status != Status.DRAFT && status != Status.PENDING) {
+            return  false;
+        }
+
+        claim.setStatus(Status.CANCELLED);
+        addAuditTrailExtract("Cancelled on: ", claim);
+        claimRepository.save(claim);
+        return true;
+    }
+
+    private void addAuditTrailExtract(String prefixMessage, Claim claim) {
+        String newLine = prefixMessage + LocalDateTime.now() + " by " + CurrentUserUtils.getStaffInfo().getName();
+        String currentAuditTrail = claim.getAuditTrail();
+
+        if (currentAuditTrail == null) {
+            claim.setAuditTrail(newLine);
+        } else {
+             String newAuditTrail = currentAuditTrail + "\n" + newLine;
+             claim.setAuditTrail(newAuditTrail);
+        }
+    }
+
 }

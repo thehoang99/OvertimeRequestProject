@@ -46,4 +46,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
     """)
     List<Claim> findClaimByStaffIdAndDateAndTime(Integer staffId, List<Status> statusList, LocalDate claimDate, LocalTime fromTime, LocalTime  toTime);
 
+    @Query("SELECT c FROM Claim c WHERE c.id = :claimId AND c.working.staffId = :staffId")
+    Claim findClaimByIdAndStaffId(Integer claimId, Integer staffId);
+
 }

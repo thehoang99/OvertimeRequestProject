@@ -51,7 +51,7 @@
                                 Detail
                             </button>
                             <button class="btn btn-success" id="btn-submitClaim" type="button"
-                                    data-bs-target="#submitClaim" data-bs-toggle="modal" th:data-id="${c.id}"
+                                    data-bs-target="#cancelAndSubmitClaim" data-bs-toggle="modal" th:data-id="${c.id}"
                                     th:if="${#strings.equals(c.status, 'DRAFT')}">
                                 Submit
                             </button>
@@ -60,7 +60,7 @@
                                 Update
                             </a>
                             <button class="btn btn-danger" id="btn-cancelClaim" type="button"
-                                    data-bs-target="#cancelClaim" data-bs-toggle="modal" th:data-id="${c.id}"
+                                    data-bs-target="#cancelAndSubmitClaim" data-bs-toggle="modal" th:data-id="${c.id}"
                                     th:if="${#strings.equals(c.status, 'DRAFT')}">
                                 Cancel
                             </button>
@@ -97,17 +97,14 @@
             </nav>
         </div>
 
-        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="cancelClaim" tabindex="-1">
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="cancelAndSubmitClaim" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-warning">Cancel Claim</h5>
+                        <h5 class="modal-title text-warning"></h5>
                         <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
-                    <div class="modal-body">
-                        <div>This action will Cancel Claim.</div>
-                        <div>Please click ‘OK’ to cancel the claim or ‘Close’ to close the dialog.</div>
-                    </div>
+                    <div class="modal-body"></div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
                         <a class="btn btn-primary btn-okModal">OK</a>

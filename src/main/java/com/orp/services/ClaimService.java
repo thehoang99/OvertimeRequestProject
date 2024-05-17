@@ -21,4 +21,6 @@ public interface ClaimService {
 
     boolean cancel(Integer claimId, Integer staffId);
 
+    boolean submit(Integer claimId, Integer staffId);
+
 }

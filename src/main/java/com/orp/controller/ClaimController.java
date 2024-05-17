@@ -224,6 +224,25 @@ public class ClaimController {
         return "view/claim/myClaim";
     }
 
+    @GetMapping("/submit")
+    public String submitClaim(
+            @RequestParam(name = "id", required = false) Integer claimId,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (claimId != null) {
+            Integer staffId = CurrentUserUtils.getStaffInfo().getId();
+            boolean isSubmit = claimService.submit(claimId, staffId);
+            if (isSubmit) {
+                redirectAttributes.addFlashAttribute("successMsg", "Submitted the claim successfully!");
+                return "redirect:/claim/myDraft";
+            }
+        }
+
+        model.addAttribute("errorMsg", "There are a few errors during claim submit process!");
+        return "view/claim/myClaim";
+    }
+
     private void myClaimExtract(Model model, String titleName, List<Status> statusList, Integer pageNumber, Integer pageSize) {
         Integer staffId = CurrentUserUtils.getStaffInfo().getId();
         Page<Claim> claims = claimService.findClaimByStaffIdAndStatus(staffId, statusList, pageNumber, pageSize);

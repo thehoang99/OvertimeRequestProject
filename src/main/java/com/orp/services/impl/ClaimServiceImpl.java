@@ -76,15 +76,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public boolean cancel(Integer claimId, Integer staffId) {
-        if (claimId == null || staffId == null) {
-            return false;
-        }
-
-        Claim claim = claimRepository.findClaimByIdAndStaffId(claimId, staffId);
-
-        if (claim == null) {
-            return false;
-        }
+        Claim claim = getCancelAndSubmitClaim(claimId, staffId);
+        if (claim == null) return false;
 
         Status status = claim.getStatus();
         if (status != Status.DRAFT && status != Status.PENDING) {
@@ -95,6 +88,40 @@ public class ClaimServiceImpl implements ClaimService {
         addAuditTrailExtract("Cancelled on: ", claim);
         claimRepository.save(claim);
         return true;
+    }
+
+    @Override
+    public boolean submit(Integer claimId, Integer staffId) {
+        Claim claim = getCancelAndSubmitClaim(claimId, staffId);
+        if (claim == null) return false;
+
+        Status status = claim.getStatus();
+        if (status != Status.DRAFT) {
+            return false;
+        }
+
+        if (claim.getWorking().getJobRankId() == 1) {
+            claim.setStatus(Status.APPROVED);
+        } else {
+            claim.setStatus(Status.PENDING);
+        }
+
+        addAuditTrailExtract("Submitted on: ", claim);
+        claimRepository.save(claim);
+
+        return true;
+    }
+
+    private Claim getCancelAndSubmitClaim(Integer claimId, Integer staffId) {
+        if (claimId == null || staffId == null) {
+            return null;
+        }
+
+        Claim claim = claimRepository.findClaimByIdAndStaffId(claimId, staffId);
+        if (claim == null) {
+            return null;
+        }
+        return claim;
     }
 
     private void addAuditTrailExtract(String prefixMessage, Claim claim) {

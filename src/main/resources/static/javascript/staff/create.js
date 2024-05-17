@@ -2,7 +2,7 @@ $(document).ready(function (){
 
     $('#createStaffForm').validate({
         errorPlacement: function (error, element) {
-            error.insertBefore(element);
+            error.insertAfter(element);
         },
         rules: {
             name: {

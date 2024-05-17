@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error Page</title>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Lato|Roboto+Slab');
+
+        * {
+          position: relative;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        .centered {
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        h1 {
+          margin-bottom: 50px;
+          font-family: 'Lato', sans-serif;
+          font-size: 50px;
+        }
+
+        .message {
+          display: inline-block;
+          line-height: 1.2;
+          transition: line-height .2s, width .2s;
+          overflow: hidden;
+        }
+
+        .message,
+        .hidden {
+          font-family: 'Roboto Slab', serif;
+          font-size: 18px;
+        }
+
+        .hidden {
+          color: #FFF;
+        }
+        .error{
+          color: red;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <section class="centered">
+        <h1 th:text="${errorCode + ' ' + status}" class="text-center">500 Server Error</h1>
+        <div class="container">
+            <span class="message" id="js-whoops"></span>
+            <span class="message" id="js-appears"></span>
+            <span class="message" id="js-error"></span>
+            <span class="message" id="js-apology"></span>
+            <div>
+                <span class="hidden" id="js-hidden">Message Here</span>
+            </div>
+        </div>
+        <span class="error message" th:text="${errorMsg}"></span>
+        <a th:href="@{/}" class="message" style="text-decoration: none; color: black; margin: 20px">← Back to Home</a>
+    </section>
+</main>
+<script th:src="@{/javascript/error.js}"></script>
+</body>
+</html>

@@ -21,7 +21,7 @@ $(document).ready(function () {
             <div>Please click ‘OK’ to cancel the claim or ‘Close’ to close the dialog.</div
        `)
 
-       $('.btn-okModal').attr('href', '/claim/cancel?id='+claimId);
+       $('.btn-okModal').attr('href', '/claim/myClaim/cancel?id='+claimId);
     });
 
     $(document).on('click', '#btn-submitClaim', function () {
@@ -34,7 +34,7 @@ $(document).ready(function () {
             <div>Please click ‘OK’ to submit the claim or ‘Close’ to close the dialog.</div
        `)
 
-        $('.btn-okModal').attr('href', '/claim/submit?id='+claimId);
+        $('.btn-okModal').attr('href', '/claim/myClaim/submit?id='+claimId);
     });
 
 });

@@ -1,5 +1,9 @@
 package com.orp.controller;
 
+import com.orp.dto.ClaimUpdateDTO;
+import com.orp.dto.ClaimUpdateDetailDTO;
+import com.orp.mapper.ClaimUpdateDetailMapper;
+import com.orp.mapper.ClaimUpdateMapper;
 import com.orp.model.Claim;
 import com.orp.model.Staff;
 import com.orp.model.Status;
@@ -23,9 +27,13 @@ public class ClaimController {
 
     @Autowired
     private ClaimService claimService;
-
     @Autowired
     private WorkingService workingService;
+    @Autowired
+    private ClaimUpdateMapper claimUpdateMapper;
+    @Autowired
+    private ClaimUpdateDetailMapper claimUpdateDetailMapper;
+
 
     @GetMapping("/create")
     public String createUI(Model model) {
@@ -205,7 +213,7 @@ public class ClaimController {
         return "view/claim/detail";
     }
 
-    @GetMapping("/cancel")
+    @GetMapping("/myClaim/cancel")
     public String cancelClaim(
             @RequestParam(name = "id", required = false) Integer claimId,
             Model model,
@@ -224,7 +232,7 @@ public class ClaimController {
         return "view/claim/myClaim";
     }
 
-    @GetMapping("/submit")
+    @GetMapping("/myClaim/submit")
     public String submitClaim(
             @RequestParam(name = "id", required = false) Integer claimId,
             Model model,
@@ -241,6 +249,72 @@ public class ClaimController {
 
         model.addAttribute("errorMsg", "There are a few errors during claim submit process!");
         return "view/claim/myClaim";
+    }
+
+    @GetMapping("/myClaim/update")
+    public String updateClaimUI(
+            @RequestParam(name = "id", required = false) Integer claimId,
+            Model model
+    ) {
+        Staff currentStaff = CurrentUserUtils.getStaffInfo();
+        model.addAttribute("currentStaff", currentStaff);
+
+        if (claimId != null) {
+            Claim claim = claimService.findClaimByIdAndStaffId(claimId, currentStaff.getId());
+            if (claim != null) {
+                if (claim.getStatus().equals(Status.DRAFT)) {
+                    ClaimUpdateDTO claimUpdateDTO = claimUpdateMapper.toDto(claim);
+                    ClaimUpdateDetailDTO claimUpdateDetailDTO = claimUpdateDetailMapper.toDto(claim);
+
+                    model.addAttribute("claimUpdateDTO", claimUpdateDTO);
+                    model.addAttribute("claimUpdateDetailDTO", claimUpdateDetailDTO);
+                    return "view/claim/update";
+                }
+            }
+        }
+
+        model.addAttribute("claimUpdateDTO", new ClaimUpdateDTO());
+        model.addAttribute("claimUpdateDetailDTO", new ClaimUpdateDetailDTO());
+        model.addAttribute("Cannot find the claim to update!");
+        return "view/claim/update";
+    }
+
+    @PostMapping("/myClaim/update")
+    public String updateClaimDB(
+            @ModelAttribute(name = "claimUpdateDTO") ClaimUpdateDTO claim,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        boolean isError = false;
+        if (result.hasErrors()) {
+            isError = true;
+        } else {
+            Claim claimDB = claimService.update(claim, result);
+            if (claimDB == null) {
+                isError = true;
+            }
+        }
+
+        if (isError) {
+            Staff currentStaff = CurrentUserUtils.getStaffInfo();
+            Claim oldclaim = claimService.findClaimByIdAndStaffId(claim.getId(), currentStaff.getId());
+
+            if (oldclaim != null) {
+                ClaimUpdateDetailDTO claimUpdateDetailDTO = claimUpdateDetailMapper.toDto(oldclaim);
+                model.addAttribute("claimUpdateDetailDTO", claimUpdateDetailDTO);
+            } else {
+                model.addAttribute("claimUpdateDetailDTO", new ClaimUpdateDetailDTO());
+            }
+
+            model.addAttribute("currentStaff", currentStaff);
+            model.addAttribute("claimUpdateDTO", claim);
+            model.addAttribute("errorMsg", "There are a few errors during claim update process!");
+            return "view/claim/update";
+        }
+
+        redirectAttributes.addFlashAttribute("successMsg", "Updated the claim successfully!");
+        return "redirect:/claim/myDraft";
     }
 
     private void myClaimExtract(Model model, String titleName, List<Status> statusList, Integer pageNumber, Integer pageSize) {

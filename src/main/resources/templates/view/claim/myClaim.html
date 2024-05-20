@@ -56,7 +56,7 @@
                                 Submit
                             </button>
                             <a class="btn btn-warning text-white" th:if="${#strings.equals(c.status, 'DRAFT')}"
-                                    th:href="@{/claim/myDraft/update(claimId=${c.id})}">
+                                    th:href="@{/claim/myClaim/update(id=${c.id})}">
                                 Update
                             </a>
                             <button class="btn btn-danger" id="btn-cancelClaim" type="button"

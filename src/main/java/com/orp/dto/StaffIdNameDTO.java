@@ -1,14 +1,18 @@
 package com.orp.dto;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
  * DTO for {@link com.orp.model.Staff}
  */
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class StaffIdNameDTO implements Serializable {
-    Integer id;
-    String name;
+    private Integer id;
+    private String name;
 }

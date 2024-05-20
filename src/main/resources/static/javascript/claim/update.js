@@ -1,23 +1,25 @@
 $(document).ready(function () {
-    function showWorkingDetail(workingId, callback) {
-        $.ajax({
-           url: '/claim/workingDetail?workingId='+workingId,
-            success: function (data) {
-               $('#workingDetail').html(data);
-               callback();
-            }
-        });
+
+    let dateInput = $('#updateClaim__date');
+
+    function showDay() {
+        let dayInput = $('#updateClaim__day');
+        let selectedDateObj = new Date(dateInput.val());
+        let option = {weekday: 'long'};
+        let day = selectedDateObj.toLocaleDateString('en-US', option);
+
+        dayInput.val(day);
     }
 
     function calculateDuration() {
-        let startDate = $('#createClaim__startDate');
-        let endDate = $('#createClaim__endDate');
-        let duration = $('#createClaim__duration');
+        let startDate = $('#updateClaim__startDate');
+        let endDate = $('#updateClaim__endDate');
+        let duration = $('#updateClaim__duration');
 
         let startDateObj = new Date(startDate.val());
         let endDateObj = new Date(endDate.val());
 
-        if (!isNaN(startDateObj.getDate()) && !isNaN(endDateObj.getDate())) {
+        if (!isNaN(startDateObj.getTime()) && !isNaN(endDateObj.getTime())) {
             let timeDuration = endDateObj - startDateObj;
             let dateDuration = Math.ceil(timeDuration / (24 * 60 * 60 * 1000));
             duration.val(`${dateDuration + 1} days`);
@@ -26,50 +28,35 @@ $(document).ready(function () {
         }
     }
 
-    let dateInput = $('#creatClaim__date');
-
-    function showDay() {
-        let dayInput = $('#creatClaim__day');
-        let selectedDateObj = new Date(dateInput.val());
-        let option = {weekday: 'long'};
-        let day = selectedDateObj.toLocaleDateString('en-US', option);
-
-        dayInput.val(day);
-    }
-
     function calculateTotalHours() {
-        let fromTimeVal = $('#creatClaim__fromTime').val();
-        let toTimeVal = $('#creatClaim__toTime').val();
-        let totalHoursInput = $('#creatClaim__totalHours');
+        let fromTime = $('#updateClaim__fromTime');
+        let toTime = $('#updateClaim__toTime');
+        let totalHours = $('#updateClaim__totalHours');
 
-        let fromTimeObj = new Date('1900-01-01T' + fromTimeVal + 'Z');
-        let toTimeObj = new Date('1900-01-01T' + toTimeVal + 'Z');
-        let totalHours = (toTimeObj - fromTimeObj) / (60 * 60 * 1000);
-        totalHours = Math.round(totalHours);
+        let fromTimeObj = new Date('1900-01-01T' + fromTime.val() + 'Z');
+        let toTimeObj = new Date('1900-01-01T' + toTime.val() + 'Z');
+        let timeDiff = toTimeObj - fromTimeObj;
+        let totalHoursVal = Math.round(timeDiff / (60 * 60 * 1000));
 
-        totalHoursInput.val(totalHours);
+        totalHours.val(totalHoursVal);
     }
 
-    let selectedWorking = $('#createClaim__projectName');
-    showWorkingDetail(selectedWorking.val(), calculateDuration);
-
-    selectedWorking.change(function () {
-        let workingId = this.value;
-        showWorkingDetail(workingId, calculateDuration);
-    });
+    showDay();
+    calculateDuration();
 
     dateInput.change(function () {
-        showDay();
+       showDay();
     });
 
-    $('#creatClaim__fromTime, #creatClaim__toTime').change(function () {
-        calculateTotalHours();
+    $('#updateClaim__fromTime, #updateClaim__toTime').change(function () {
+       calculateTotalHours();
     });
 
-    $('#createClaimForm').validate({
+    $('#updateClaimForm').validate({
         errorPlacement: function (error, element) {
             error.insertAfter(element);
         },
+
         rules: {
             status: {
                 required: true
@@ -93,6 +80,7 @@ $(document).ready(function () {
                 required: true
             }
         },
+
         messages: {
             status: {
                 required: "Claim status must be filled"
@@ -116,25 +104,26 @@ $(document).ready(function () {
                 required: "Remarks must be filled"
             }
         },
+
         submitHandler: function (form) {
             form.submit();
         }
     });
 
     $.validator.methods.isInDuration = function (value) {
-        let startDate = $('#createClaim__startDate').val();
-        let endDate = $('#createClaim__endDate').val();
+        let startDate = $('#updateClaim__startDate').val();
+        let endDate = $('#updateClaim__endDate').val();
         return value >= startDate && value <= endDate;
     }
 
     $.validator.methods.isNotExpired = function (value) {
-        let joinDate = $('#createClaim__joinedDate').val();
-        let leftDate = $('#createClaim__leftDate').val();
+        let joinDate = $('#updateClaim__joinedDate').val();
+        let leftDate = $('#updateClaim__leftDate').val();
         return value >= joinDate && (leftDate === "" || value <= leftDate);
     }
 
     $.validator.methods.isAfterFromTime = function (value) {
-        let fromTime = $('#creatClaim__fromTime').val();
+        let fromTime = $('#updateClaim__fromTime').val();
         return value > fromTime;
     }
 

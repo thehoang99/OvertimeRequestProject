@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Claim</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="border-bottom border-1 mb-5 p-2 ">
+            <h1 class="text-warning">Update Claim</h1>
+        </div>
+        <div class="border border-1 rounded-3 mb-5 ">
+            <div class="border-bottom border-1 bg-body-secondary">
+                <p class="p-2 m-0 text-danger">Form to update claim</p>
+            </div>
+            <div class="p-3">
+                <form id="updateClaimForm" th:method="POST" th:action="@{/claim/myClaim/update}" th:object="${claimUpdateDTO}">
+                    <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
+                        <div class="alert alert-danger py-2 px-3" role="alert" th:text="${errorMsg}"></div>
+                    </div>
+                    <input type="hidden" required th:field="*{id}">
+                    <input type="hidden" required th:field="*{workingId}">
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <input class="form-control shadow-none bg-body-secondary" readonly required th:field="*{status}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Id</label>
+                        <input class="form-control shadow-none" disabled th:value="${currentStaff.id}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Name</label>
+                        <input class="form-control shadow-none" disabled th:value="${currentStaff.name}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Department</label>
+                        <input class="form-control shadow-none" disabled th:value="${currentStaff.department.name}">
+                    </div>
+
+                    <div th:object="${claimUpdateDetailDTO}">
+                        <div class="mb-3">
+                            <label class="form-label">Project Name</label>
+                            <input class="form-control shadow-none" disabled th:value="*{projectName}">
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label class="form-label">Role In Project</label>
+                                    <input class="form-control shadow-none" disabled th:value="*{jobRankName}">
+                                </div>
+                                <div class="col mb-3">
+                                    <label class="form-label">Date Of Joining Project</label>
+                                    <input class="form-control shadow-none" id="updateClaim__joinedDate" disabled th:value="*{joinedProjectDate}" type="date">
+                                </div>
+                                <div class="col mb-3">
+                                    <label class="form-label">Date Of Left Project</label>
+                                    <input class="form-control shadow-none" id="updateClaim__leftDate" disabled th:value="*{leftProjectDate}" type="date">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label class="form-label">Project Start Date</label>
+                                    <input class="form-control shadow-none" id="updateClaim__startDate" disabled th:value="*{projectStartDate}" type="date">
+                                </div>
+                                <div class="col mb-3">
+                                    <label class="form-label">Project End Date</label>
+                                    <input class="form-control shadow-none" id="updateClaim__endDate" disabled th:value="*{projectEndDate}" type="date">
+                                </div>
+                                <div class="col mb-3">
+                                    <label class="form-label">Project Duration</label>
+                                    <input class="form-control shadow-none" id="updateClaim__duration" disabled type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label class="form-label">Claim Date</label>
+                                <input class="form-control shadow-none" id="updateClaim__date" required name="date" th:value="*{date}" type="date">
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">Day Of Year</label>
+                                <input  class="form-control shadow-none" id="updateClaim__day" disabled type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <label class="form-label">From Time</label>
+                                <input class="form-control shadow-none" id="updateClaim__fromTime" required name="fromTime" th:value="*{fromTime}" type="time">
+                                <div class="text-danger" th:errors="*{fromTime}" th:if="${#fields.hasErrors('fromTime')}"></div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label class="form-label">To Time</label>
+                                <input class="form-control shadow-none" id="updateClaim__toTime" required name="toTime" th:value="*{toTime}" type="time">
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label class="form-label">Total Hours</label>
+                                <input class="form-control shadow-none bg-body-secondary" id="updateClaim__totalHours" readonly required
+                                       th:field="*{totalHours}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Remarks</label>
+                        <textarea class="form-control shadow-none" id="updateClaim__remarks" required th:field="*{remarks}"
+                                  style="resize: vertical; overflow: auto"></textarea>
+                    </div>
+
+                    <button class="btn btn-success my-2 py-2 btn-font-size" type="submit">Save</button>
+                    <button class="btn btn-warning my-2 py-2 btn-font-size text-white" type="reset">Reset</button>
+                    <a class="btn btn-secondary my-2 py-2 btn-font-size" th:href="@{/claim/myDraft}">Close</a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/javascript/claim/update.js}"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.orp.services;
 
+import com.orp.dto.ClaimUpdateDTO;
 import com.orp.model.Claim;
 import com.orp.model.Status;
 import org.springframework.data.domain.Page;
@@ -19,4 +20,11 @@ public interface ClaimService {
 
     Claim save(Claim claim, BindingResult result);
 
+    boolean cancel(Integer claimId, Integer staffId);
+
+    boolean submit(Integer claimId, Integer staffId);
+
+    Claim findClaimByIdAndStaffId(Integer claimId, Integer staffId);
+
+    Claim update(ClaimUpdateDTO claim, BindingResult result);
 }

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Review Claim</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
+            <div class="alert alert-danger py-2 px-3" role="alert" th:text="${errorMsg}"></div>
+        </div>
+        <div class="border-bottom border-1 mb-5 p-2 ">
+            <h1 class="text-warning">Review Claim</h1>
+        </div>
+        <div class="border border-1 rounded-3 mb-5 ">
+            <div class="border-bottom border-1 bg-body-secondary">
+                <p class="p-2 m-0 text-danger">Claim Information to review</p>
+            </div>
+            <div class="p-3">
+                <div th:object="${claimReviewDetailDTO}">
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <input class="form-control shadow-none" disabled th:field="*{status}" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Id</label>
+                        <input class="form-control shadow-none" disabled th:value="*{staffId}" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Name</label>
+                        <input class="form-control shadow-none" disabled th:value="*{staffName}" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Staff Department </label>
+                        <input class="form-control shadow-none" disabled th:value="*{departmentName}" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Project Name</label>
+                        <input class="form-control shadow-none" disabled th:field="*{projectName}" type="text">
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label class="form-label">Role In Project</label>
+                                <input class="form-control shadow-none" disabled  th:value="*{jobRankName}" type="text">
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">Joined Project Date</label>
+                                <input class="form-control shadow-none" disabled name="joinedProjectDate" th:value="*{joinedProjectDate}" type="date">
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">Left Project Date</label>
+                                <input class="form-control shadow-none" disabled name="leftProjectDate" th:value="*{leftProjectDate}" type="date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label class="form-label">Start Date Project</label>
+                                <input class="form-control shadow-none" id="financeReviewClaim__startDate" disabled type="date"
+                                       name="projectStartDate" th:value="*{projectStartDate}">
+                            </div>
+                            <div class="col mb-3 ">
+                                <label class="form-label">End Date Project</label>
+                                <input class="form-control shadow-none" id="financeReviewClaim__endDate" disabled type="date"
+                                       name="projectEndDate" th:value="*{projectEndDate}">
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">Project Duration</label>
+                                <input class="form-control shadow-none" id="financeReviewClaim__duration" disabled name="projectDuration" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label class="form-label">Claim Date</label>
+                                <input class="form-control shadow-none" id="financeReviewClaim__date" disabled name="date" th:value="*{claimDate}" type="date">
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">Day Of Year</label>
+                                <input class="form-control shadow-none" id="financeReviewClaim__day" disabled type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <label class="form-label">From Time</label>
+                                <input class="form-control shadow-none" disabled type="time"
+                                       name="fromTime" th:value="*{fromTime}">
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label class="form-label">To Time</label>
+                                <input class="form-control shadow-none" disabled type="time"
+                                       name="toTime" th:value="*{toTime}">
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label class="form-label">Total Hours</label>
+                                <input class="form-control shadow-none" disabled th:field="*{totalHours}" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Note</label>
+                        <textarea class="form-control shadow-none" disabled th:field="*{remarks}" style="resize: vertical; overflow: auto"></textarea>
+                    </div>
+                </div>
+                <form id="financeReviewClaimForm" method="post" th:object="${claimReviewDTO}">
+                    <input th:field="*{id}" type="hidden">
+                    <div class="mb-3">
+                        <label class="form-label">Remarks</label>
+                        <textarea class="form-control shadow-none" name="remarks" placeholder="Please enter the remark" required
+                                  style="resize: vertical; overflow: auto"></textarea>
+                    </div>
+                    <button class="btn btn-success my-2 py-2 btn-font-size" id="btn-paid" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
+                        Paid
+                    </button>
+                    <button class="btn btn-danger my-2 py-2 btn-font-size text-white" id="btn-reject" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
+                        Reject
+                    </button>
+                    <a class="btn btn-secondary" th:href="@{/claim/pendingApproval}">Close</a>
+
+                    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fs-5 text-warning" id="modal-title"></h5>
+                                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                                </div>
+                                <div class="modal-body" id="modal-content"></div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                                    <button class="btn btn-primary" id="modal-okBtn" data-bs-dismiss="modal" type="submit">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>
+<script th:src="@{/javascript/claim/finance/review.js}"></script>
+</body>
+</html>

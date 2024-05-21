@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     function showWorkingDetail(workingId, callback) {
         $.ajax({
            url: '/claim/workingDetail?workingId='+workingId,

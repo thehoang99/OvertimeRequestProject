@@ -1,8 +1,10 @@
 package com.orp.services.impl;
 
+import com.orp.dto.ClaimReviewDTO;
 import com.orp.dto.ClaimUpdateDTO;
 import com.orp.mapper.ClaimUpdateMapper;
 import com.orp.model.Claim;
+import com.orp.model.Staff;
 import com.orp.model.Status;
 import com.orp.model.Working;
 import com.orp.repositories.ClaimRepository;
@@ -26,10 +28,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Autowired
     private ClaimRepository claimRepository;
-
     @Autowired
     private WorkingRepository workingRepository;
-
     @Autowired
     private ClaimUpdateMapper claimUpdateMapper;
 
@@ -156,6 +156,88 @@ public class ClaimServiceImpl implements ClaimService {
         claimUpdateMapper.partialUpdate(claim, claimDB);
         addAuditTrailExtract("Updated on: ", claimDB);
         return claimRepository.save(claimDB);
+    }
+
+    @Override
+    public Claim review(Integer claimId, Status status, boolean isFinance) {
+        if (claimId == null || status == null) {
+            return null;
+        }
+
+        Staff currentStaff = CurrentUserUtils.getStaffInfo();
+        if (isFinance) {
+            String role = currentStaff.getRole().getName();
+            if (role.equals("ROLE_FINANCE")) {
+                return claimRepository.findByIdAndStatus(claimId, status);
+            }
+        }
+        return claimRepository.findClaimByIdAndStatusAndPM(claimId, status, currentStaff.getId());
+    }
+
+    @Override
+    public boolean approveReturnReject(ClaimReviewDTO claimReviewDTO, Status statusAfter) {
+        if (claimReviewDTO == null || statusAfter == null) {
+            return false;
+        }
+
+        Integer staffId = CurrentUserUtils.getStaffInfo().getId();
+        Claim claim = claimRepository.findClaimByIdAndStatusAndPM(claimReviewDTO.getId(), Status.PENDING, staffId);
+        String prefixMessage;
+
+        if (claim == null) {
+            return false;
+        }
+
+        switch (statusAfter) {
+            case APPROVED -> {
+                prefixMessage = "Approved on: ";
+            }
+            case DRAFT -> {
+                prefixMessage = "Returned on: ";
+
+            }
+            case REJECTED -> {
+                prefixMessage = "Rejected on: ";
+
+            }
+            default -> prefixMessage = "Action is failed!";
+        }
+
+        claim.setStatus(statusAfter);
+        claim.setRemarks(claimReviewDTO.getRemarks());
+        addAuditTrailExtract(prefixMessage, claim);
+        claimRepository.save(claim);
+        return true;
+    }
+
+    @Override
+    public boolean paidRejectByFinance(ClaimReviewDTO claimReviewDTO, Status statusAfter) {
+        if (claimReviewDTO == null || statusAfter == null) {
+            return false;
+        }
+
+        Staff staff = CurrentUserUtils.getStaffInfo();
+        if (!staff.getRole().getName().equals("ROLE_FINANCE")) {
+            return false;
+        }
+
+        Claim claim = claimRepository.findByIdAndStatus(claimReviewDTO.getId(), Status.APPROVED);
+        if (claim == null) {
+            return false;
+        }
+
+        String prefixMessage;
+        if (statusAfter.equals(Status.PAID)) {
+            prefixMessage = "Paid on: ";
+        } else {
+            prefixMessage = "Rejected on: ";
+        }
+
+        claim.setStatus(statusAfter);
+        claim.setRemarks(claimReviewDTO.getRemarks());
+        addAuditTrailExtract(prefixMessage, claim);
+        claimRepository.save(claim);
+        return true;
     }
 
     private Claim getCancelAndSubmitClaim(Integer claimId, Integer staffId) {

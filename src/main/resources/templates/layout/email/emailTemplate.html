@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Claim</title>
+    <style>
+        *{
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <p style="font-weight: bold" th:text="'Dear '+${receiver}"></p>
+    <p>Overtime request for <span th:text="${projectName}"></span> <span th:text="${staffName}"></span> - <span th:text="${staffId}"></span> <span th:text="${content}"></span></p>
+    <p>Please access the Claim via the following link:</p>
+    <a th:href="${url}" th:text="${url}"></a>
+    <p style="font-weight: bold">Sincerely</p>
+    <p>System Administrator</p>
+    <p style="font-style: italic">Note: This is an auto-generated email, please do not reply.</p>
+</body>
+</html>

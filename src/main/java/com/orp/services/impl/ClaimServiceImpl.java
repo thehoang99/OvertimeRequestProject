@@ -2,15 +2,18 @@ package com.orp.services.impl;
 
 import com.orp.dto.ClaimReviewDTO;
 import com.orp.dto.ClaimUpdateDTO;
+import com.orp.mapper.ClaimEmailMapper;
 import com.orp.mapper.ClaimUpdateMapper;
 import com.orp.model.Claim;
 import com.orp.model.Staff;
 import com.orp.model.Status;
 import com.orp.model.Working;
 import com.orp.repositories.ClaimRepository;
+import com.orp.repositories.StaffRepository;
 import com.orp.repositories.WorkingRepository;
 import com.orp.services.ClaimService;
 import com.orp.utils.CurrentUserUtils;
+import com.orp.utils.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,12 +29,32 @@ import java.util.List;
 @Service
 public class ClaimServiceImpl implements ClaimService {
 
+    public static final String APPROVED_CONTENT_TO_FINANCE = "is approved and waiting for pay.";
+    public static final String RETURNED_CONTENT_TO_CLAIMER = "is returned.";
+    public static final String REJECTED_CONTENT_TO_CLAIMER = "is rejected.";
+    public static final String PENDING_CONTENT_TO_APPROVER = "is submitted and waiting for approval.";
+    public static final String APPROVED_URL_TO_FINANCE = "/claim/finance/review?claimId=";
+    public static final String RETURNED_URL_TO_CLAIMER = "/claim/myClaim/update?id=";
+    public static final String REJECT_URL_TO_CLAIMER = "/claim/myRejectOrCancel";
+    public static final String PENDING_URL_TO_APPROVER = "/claim/pm/review?claimId=";
+    public static final String PAID_CONTENT_TO_CLAIMER = "is paid.";
+    public static final String PAID_URL_TO_CLAIMER = "/claim/myPaid";
+    public static final String PENDING_APPROVAL_CLAIMS_EMAIL_TEMPLATE = "/layout/email/pendingClaimsEmailTemplate";
+    public static final String SUBJECT_REMIND_PENDING_CLAIMS = "Pending Approval Claims";
+    public static final String MESSAGE_SYSTEM_CANNOT_READ_DATA = "The system cannot read the data, cannot update the data. Check the data again!";
+
     @Autowired
     private ClaimRepository claimRepository;
+    @Autowired
+    private StaffRepository staffRepository;
     @Autowired
     private WorkingRepository workingRepository;
     @Autowired
     private ClaimUpdateMapper claimUpdateMapper;
+    @Autowired
+    private ClaimEmailMapper claimEmailMapper;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public Page<Claim> findClaimByStaffIdAndStatus(Integer staffId, List<Status> statusList, Integer pageNumber, Integer pageSize) {
@@ -111,8 +134,10 @@ public class ClaimServiceImpl implements ClaimService {
 
         if (claim.getWorking().getJobRankId() == 1) {
             claim.setStatus(Status.APPROVED);
+            sendEmailToFinanceTeam(claim, EmailService.EMAIL_TEMP, APPROVED_URL_TO_FINANCE + claim.getId(), APPROVED_CONTENT_TO_FINANCE);
         } else {
             claim.setStatus(Status.PENDING);
+            sendEmailToPM(claim, EmailService.EMAIL_TEMP, PENDING_URL_TO_APPROVER + claim.getId(), PENDING_CONTENT_TO_APPROVER);
         }
 
         addAuditTrailExtract("Submitted on: ", claim);
@@ -191,14 +216,15 @@ public class ClaimServiceImpl implements ClaimService {
         switch (statusAfter) {
             case APPROVED -> {
                 prefixMessage = "Approved on: ";
+                sendEmailToFinanceTeam(claim, EmailService.EMAIL_TEMP, APPROVED_URL_TO_FINANCE + claim.getId(), APPROVED_CONTENT_TO_FINANCE);
             }
             case DRAFT -> {
                 prefixMessage = "Returned on: ";
-
+                sendEmailToClaimer(claim, EmailService.EMAIL_TEMP, RETURNED_URL_TO_CLAIMER + claim.getId(), RETURNED_CONTENT_TO_CLAIMER);
             }
             case REJECTED -> {
                 prefixMessage = "Rejected on: ";
-
+                sendEmailToClaimer(claim, EmailService.EMAIL_TEMP, REJECT_URL_TO_CLAIMER, REJECTED_CONTENT_TO_CLAIMER);
             }
             default -> prefixMessage = "Action is failed!";
         }
@@ -229,8 +255,10 @@ public class ClaimServiceImpl implements ClaimService {
         String prefixMessage;
         if (statusAfter.equals(Status.PAID)) {
             prefixMessage = "Paid on: ";
+            sendEmailToClaimer(claim, EmailService.EMAIL_TEMP, PAID_URL_TO_CLAIMER, PAID_CONTENT_TO_CLAIMER);
         } else {
             prefixMessage = "Rejected on: ";
+            sendEmailToClaimer(claim, EmailService.EMAIL_TEMP, REJECT_URL_TO_CLAIMER, REJECTED_CONTENT_TO_CLAIMER);
         }
 
         claim.setStatus(statusAfter);
@@ -261,6 +289,33 @@ public class ClaimServiceImpl implements ClaimService {
         } else {
              String newAuditTrail = currentAuditTrail + "\n" + newLine;
              claim.setAuditTrail(newAuditTrail);
+        }
+    }
+
+    private void sendEmailToPM(Claim claim, String template, String url, String content) {
+        Integer claimId = claim.getId();
+        Integer projectId = claimRepository.findProjectIdByClaimId(claimId);
+        Staff pm = workingRepository.findPMByProjectId(projectId);
+        if (pm != null) {
+            List<String> toList = List.of(pm.getEmail());
+            emailService.sendHtmlEmail(claimEmailMapper.toDto(claim), toList, pm.getName(), template, url, content);
+        }
+    }
+
+    private void sendEmailToFinanceTeam(Claim claim, String template, String url, String content) {
+        List<Staff> financeTeam = staffRepository.findByRoleId(2);
+        if (!financeTeam.isEmpty()) {
+            List<String> toList = financeTeam.stream().map(Staff::getEmail).toList();
+            emailService.sendHtmlEmail(claimEmailMapper.toDto(claim), toList, "Finance Team", template, url, content);
+        }
+    }
+
+    private void sendEmailToClaimer(Claim claim, String template, String url, String content) {
+        Integer claimId = claim.getId();
+        Staff staff = claimRepository.findStaffByClaimId(claimId);
+        if (staff != null) {
+            List<String> toList = List.of(staff.getEmail());
+            emailService.sendHtmlEmail(claimEmailMapper.toDto(claim), toList, staff.getName(), template, url, content);
         }
     }
 

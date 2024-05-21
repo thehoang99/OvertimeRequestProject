@@ -22,14 +22,14 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
         SELECT c
         FROM Claim c
         WHERE c.status IN :statusList
-        AND c.working.projectId IN 
+        AND c.working.projectId IN
             (
-                SELECT w.projectId 
+                SELECT w.projectId
                 FROM Working w
                 WHERE w.staffId = :staffId
                 AND w.jobRankId = 1
             )
-        ORDER BY c.id DESC 
+        ORDER BY c.id DESC
     """)
     Page<Claim> findClaimByStaffIdAndStatusAndPM(Integer staffId, List<Status> statusList, Pageable pageable);
 
@@ -59,5 +59,22 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
 
     @Query("SELECT c FROM Claim c WHERE c.id = :claimId AND c.working.staffId = :staffId")
     Claim findClaimByIdAndStaffId(Integer claimId, Integer staffId);
+
+    Claim findByIdAndStatus(Integer claimId, Status status);
+
+    @Query("""
+        SELECT c
+        FROM Claim c
+        WHERE c.id = :claimId
+        AND c.status = :status
+        AND c.working.projectId IN
+            (
+                SELECT w.projectId
+                FROM Working w
+                WHERE w.staffId = :staffId
+                AND w.jobRankId = 1
+            )
+    """)
+    Claim findClaimByIdAndStatusAndPM(Integer claimId, Status status, Integer staffId);
 
 }

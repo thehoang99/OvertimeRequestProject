@@ -6,6 +6,9 @@
 <body>
 <main>
     <div>
+        <div class="mb-3" th:if="${not #strings.isEmpty(successMsg)}">
+            <div class="alert alert-success py-2 px-3" role="alert" th:text="${successMsg}"></div>
+        </div>
         <div class="border-bottom border-1 mb-5 p-2">
             <h1 class="text-warning" th:text="${titleName}"></h1>
         </div>
@@ -36,7 +39,7 @@
                                     data-bs-target="#showClaimDetail" data-bs-toggle="modal" th:data-id="${c.id}">
                                 Detail
                             </button>
-                            <a class="btn btn-success" th:href="@{/claim/pendingApproval/review(claimId=${c.id})}"
+                            <a class="btn btn-success" th:href="@{/claim/pm/review(claimId=${c.id})}"
                                     th:if="${#strings.equals(c.status, 'PENDING')}">
                                 Review
                             </a>

@@ -1,5 +1,6 @@
 package com.orp.services;
 
+import com.orp.dto.ClaimReviewDTO;
 import com.orp.dto.ClaimUpdateDTO;
 import com.orp.model.Claim;
 import com.orp.model.Status;
@@ -27,4 +28,10 @@ public interface ClaimService {
     Claim findClaimByIdAndStaffId(Integer claimId, Integer staffId);
 
     Claim update(ClaimUpdateDTO claim, BindingResult result);
+
+    Claim review(Integer claimId, Status status, boolean isFinance);
+
+    boolean approveReturnReject(ClaimReviewDTO claimReviewDTO, Status statusAfter);
+
+    boolean paidRejectByFinance(ClaimReviewDTO claimReviewDTO, Status statusAfter);
 }

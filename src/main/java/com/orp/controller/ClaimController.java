@@ -1,7 +1,11 @@
 package com.orp.controller;
 
+import com.orp.dto.ClaimReviewDTO;
+import com.orp.dto.ClaimReviewDetailDTO;
 import com.orp.dto.ClaimUpdateDTO;
 import com.orp.dto.ClaimUpdateDetailDTO;
+import com.orp.mapper.ClaimReviewDetailMapper;
+import com.orp.mapper.ClaimReviewMapper;
 import com.orp.mapper.ClaimUpdateDetailMapper;
 import com.orp.mapper.ClaimUpdateMapper;
 import com.orp.model.Claim;
@@ -33,6 +37,10 @@ public class ClaimController {
     private ClaimUpdateMapper claimUpdateMapper;
     @Autowired
     private ClaimUpdateDetailMapper claimUpdateDetailMapper;
+    @Autowired
+    private ClaimReviewMapper claimReviewMapper;
+    @Autowired
+    private ClaimReviewDetailMapper claimReviewDetailMapper;
 
 
     @GetMapping("/create")
@@ -317,6 +325,97 @@ public class ClaimController {
         return "redirect:/claim/myDraft";
     }
 
+    @GetMapping("/pm/review")
+    public String pmReviewClaimUI(
+            @RequestParam(name = "claimId", required = false) Integer claimId,
+            Model model
+    ) {
+        if (claimId != null) {
+            Claim claim = claimService.review(claimId, Status.PENDING, false);
+            if (claim != null) {
+                ClaimReviewDTO claimReviewDTO = claimReviewMapper.toDto(claim);
+                ClaimReviewDetailDTO claimReviewDetailDTO = claimReviewDetailMapper.toDto(claim);
+
+                model.addAttribute("claimReviewDTO", claimReviewDTO);
+                model.addAttribute("claimReviewDetailDTO", claimReviewDetailDTO);
+                return "view/claim/pm/pmReview";
+            }
+        }
+
+        model.addAttribute("claimReviewDTO", new ClaimReviewDTO());
+        model.addAttribute("claimReviewDetailDTO", new ClaimReviewDetailDTO());
+        model.addAttribute("errorMsg", "Cannot find the claim!");
+        return "view/claim/pm/pmReview";
+    }
+
+    @GetMapping("/finance/review")
+    public String financeReviewClaimUI(
+            @RequestParam(name = "claimId", required = false) Integer claimId,
+            Model model
+    ) {
+        if (claimId != null) {
+            Claim claim = claimService.review(claimId, Status.APPROVED, true);
+            if (claim != null) {
+                ClaimReviewDTO claimReviewDTO = claimReviewMapper.toDto(claim);
+                ClaimReviewDetailDTO claimReviewDetailDTO = claimReviewDetailMapper.toDto(claim);
+
+                model.addAttribute("claimReviewDTO", claimReviewDTO);
+                model.addAttribute("claimReviewDetailDTO", claimReviewDetailDTO);
+                return "view/claim/finance/financeReview";
+            }
+        }
+
+        model.addAttribute("claimReviewDTO", new ClaimReviewDTO());
+        model.addAttribute("claimReviewDetailDTO", new ClaimReviewDetailDTO());
+        model.addAttribute("errorMsg", "Cannot find the claim!");
+        return "view/claim/finance/financeReview";
+    }
+
+    @PostMapping("/pmReview/approve")
+    public String approveClaim(
+            @ModelAttribute(name = "claimReviewDTO") ClaimReviewDTO claimReviewDTO,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        return approveReturnRejectExtract(claimReviewDTO, model, redirectAttributes, Status.APPROVED, "Approved");
+    }
+
+    @PostMapping("/pmReview/return")
+    public String returnClaim(
+            @ModelAttribute(name = "claimReviewDTO") ClaimReviewDTO claimReviewDTO,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        return approveReturnRejectExtract(claimReviewDTO, model, redirectAttributes, Status.DRAFT, "Returned");
+    }
+
+    @PostMapping("/pmReview/reject")
+    public String rejectClaimByPM(
+            @ModelAttribute(name = "claimReviewDTO") ClaimReviewDTO claimReviewDTO,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        return approveReturnRejectExtract(claimReviewDTO, model, redirectAttributes, Status.REJECTED, "Rejected");
+    }
+
+    @PostMapping("/financeReview/paid")
+    public String paidClaim(
+            @ModelAttribute(name = "claimReviewDTO") ClaimReviewDTO claimReviewDTO,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        return paidRejectFinance(claimReviewDTO, model, redirectAttributes, Status.PAID,  "Paid");
+    }
+
+    @PostMapping("/financeReview/reject")
+    public String rejectClaimbyFinance(
+            @ModelAttribute(name = "claimReviewDTO") ClaimReviewDTO claimReviewDTO,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        return paidRejectFinance(claimReviewDTO, model, redirectAttributes, Status.REJECTED,  "Rejected");
+    }
+
     private void myClaimExtract(Model model, String titleName, List<Status> statusList, Integer pageNumber, Integer pageSize) {
         Integer staffId = CurrentUserUtils.getStaffInfo().getId();
         Page<Claim> claims = claimService.findClaimByStaffIdAndStatus(staffId, statusList, pageNumber, pageSize);
@@ -343,6 +442,30 @@ public class ClaimController {
         model.addAttribute("claim", claim);
         model.addAttribute("workings", workings);
         model.addAttribute("currentStaff", currentStaff);
+    }
+
+    private String approveReturnRejectExtract(ClaimReviewDTO claimReviewDTO, Model model, RedirectAttributes redirectAttributes, Status statusAfter, String action) {
+        if (claimReviewDTO != null) {
+            boolean isAction = claimService.approveReturnReject(claimReviewDTO, statusAfter);
+            if (isAction) {
+                redirectAttributes.addFlashAttribute("successMsg", action+" the claim successfully!");
+                return "redirect:/claim/pendingApproval";
+            }
+        }
+        model.addAttribute("errorMsg", "There are a few errors during claim approval process!");
+        return "view/claim/pm/pmReview";
+    }
+
+    private String paidRejectFinance(ClaimReviewDTO claimReviewDTO, Model model, RedirectAttributes redirectAttributes, Status statusAfter, String action) {
+        if (claimReviewDTO != null) {
+            boolean isAction = claimService.paidRejectByFinance(claimReviewDTO, statusAfter);
+            if (isAction) {
+                redirectAttributes.addFlashAttribute("successMsg", action+" the claim successfully!");
+                return "redirect:/claim/approved";
+            }
+        }
+        model.addAttribute("errorMsg", "There are a few errors during claim paid process!");
+        return "view/claim/finance/financeReview";
     }
 
 }

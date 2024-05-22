@@ -1,6 +1,6 @@
 package com.orp.utils.email;
 
-import com.orp.dto.ClaimEmailDTTO;
+import com.orp.dto.ClaimEmailDTO;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,14 +27,14 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     @Async
-    public void sendHtmlEmail(ClaimEmailDTTO claimEmailDTTO, List<String> toList, String receiver, String mailTemplate, String url, String content) {
+    public void sendHtmlEmail(ClaimEmailDTO claimEmailDTO, List<String> toList, String receiver, String mailTemplate, String url, String content) {
         try {
-            Context context = getContext(claimEmailDTTO, receiver, url, content);
+            Context context = getContext(claimEmailDTO, receiver, url, content);
             String text = templateEngine.process(mailTemplate, context);
             MimeMessage message = getMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setFrom(fromEmail);
-            helper.setSubject(createSubject(claimEmailDTTO));
+            helper.setSubject(createSubject(claimEmailDTO));
             helper.setTo(toList.toArray(new String[0]));
             helper.setText(text, true);
             mailSender.send(message);
@@ -43,10 +43,10 @@ public class EmailServiceImpl implements EmailService{
         }
     }
 
-    private Context getContext(ClaimEmailDTTO claimEmailDTTO, String receiver, String url, String content) {
-        Integer staffId = claimEmailDTTO.getStaffId();
-        String staffName = claimEmailDTTO.getStaffName();
-        String projectName = claimEmailDTTO.getProjectName();
+    private Context getContext(ClaimEmailDTO claimEmailDTO, String receiver, String url, String content) {
+        Integer staffId = claimEmailDTO.getStaffId();
+        String staffName = claimEmailDTO.getStaffName();
+        String projectName = claimEmailDTO.getProjectName();
 
         Context context = new Context();
         context.setVariable("receiver", receiver);
@@ -59,8 +59,8 @@ public class EmailServiceImpl implements EmailService{
         return context;
     }
 
-    private String createSubject(ClaimEmailDTTO claimEmailDTTO) {
-        return String.format("Overtime Request for %s by %s-%s", claimEmailDTTO.getProjectName(), claimEmailDTTO.getStaffName(), claimEmailDTTO.getStaffId());
+    private String createSubject(ClaimEmailDTO claimEmailDTO) {
+        return String.format("Overtime Request for %s by %s-%s", claimEmailDTO.getProjectName(), claimEmailDTO.getStaffName(), claimEmailDTO.getStaffId());
     }
 
     private MimeMessage getMimeMessage() {

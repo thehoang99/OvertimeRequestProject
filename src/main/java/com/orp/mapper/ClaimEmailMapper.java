@@ -1,6 +1,6 @@
 package com.orp.mapper;
 
-import com.orp.dto.ClaimEmailDTTO;
+import com.orp.dto.ClaimEmailDTO;
 import com.orp.model.Claim;
 import org.mapstruct.*;
 
@@ -12,12 +12,12 @@ public interface ClaimEmailMapper {
     @Mapping(source = "staffName", target = "working.staff.name")
     @Mapping(source = "projectName", target = "working.project.name")
     @Mapping(source = "claimDate", target = "date")
-    Claim toEntity(ClaimEmailDTTO claimEmailDTTO);
+    Claim toEntity(ClaimEmailDTO claimEmailDTO);
 
     @InheritInverseConfiguration(name = "toEntity")
-    ClaimEmailDTTO toDto(Claim claim);
+    ClaimEmailDTO toDto(Claim claim);
 
     @InheritConfiguration(name = "toEntity")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Claim partialUpdate(ClaimEmailDTTO claimEmailDTTO, @MappingTarget Claim claim);
+    Claim partialUpdate(ClaimEmailDTO claimEmailDTO, @MappingTarget Claim claim);
 }

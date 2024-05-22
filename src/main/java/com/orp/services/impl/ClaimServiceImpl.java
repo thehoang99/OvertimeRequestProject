@@ -29,20 +29,6 @@ import java.util.List;
 @Service
 public class ClaimServiceImpl implements ClaimService {
 
-    public static final String APPROVED_CONTENT_TO_FINANCE = "is approved and waiting for pay.";
-    public static final String RETURNED_CONTENT_TO_CLAIMER = "is returned.";
-    public static final String REJECTED_CONTENT_TO_CLAIMER = "is rejected.";
-    public static final String PENDING_CONTENT_TO_APPROVER = "is submitted and waiting for approval.";
-    public static final String APPROVED_URL_TO_FINANCE = "/claim/finance/review?claimId=";
-    public static final String RETURNED_URL_TO_CLAIMER = "/claim/myClaim/update?id=";
-    public static final String REJECT_URL_TO_CLAIMER = "/claim/myRejectOrCancel";
-    public static final String PENDING_URL_TO_APPROVER = "/claim/pm/review?claimId=";
-    public static final String PAID_CONTENT_TO_CLAIMER = "is paid.";
-    public static final String PAID_URL_TO_CLAIMER = "/claim/myPaid";
-    public static final String PENDING_APPROVAL_CLAIMS_EMAIL_TEMPLATE = "/layout/email/pendingClaimsEmailTemplate";
-    public static final String SUBJECT_REMIND_PENDING_CLAIMS = "Pending Approval Claims";
-    public static final String MESSAGE_SYSTEM_CANNOT_READ_DATA = "The system cannot read the data, cannot update the data. Check the data again!";
-
     @Autowired
     private ClaimRepository claimRepository;
     @Autowired
@@ -55,6 +41,17 @@ public class ClaimServiceImpl implements ClaimService {
     private ClaimEmailMapper claimEmailMapper;
     @Autowired
     private EmailService emailService;
+
+    public static final String APPROVED_CONTENT_TO_FINANCE = "is approved and waiting for pay.";
+    public static final String RETURNED_CONTENT_TO_CLAIMER = "is returned.";
+    public static final String REJECTED_CONTENT_TO_CLAIMER = "is rejected.";
+    public static final String PENDING_CONTENT_TO_APPROVER = "is submitted and waiting for approval.";
+    public static final String APPROVED_URL_TO_FINANCE = "/claim/finance/review?claimId=";
+    public static final String RETURNED_URL_TO_CLAIMER = "/claim/myClaim/update?id=";
+    public static final String REJECT_URL_TO_CLAIMER = "/claim/myRejectOrCancel";
+    public static final String PENDING_URL_TO_APPROVER = "/claim/pm/review?claimId=";
+    public static final String PAID_CONTENT_TO_CLAIMER = "is paid.";
+    public static final String PAID_URL_TO_CLAIMER = "/claim/myPaid";
 
     @Override
     public Page<Claim> findClaimByStaffIdAndStatus(Integer staffId, List<Status> statusList, Integer pageNumber, Integer pageSize) {

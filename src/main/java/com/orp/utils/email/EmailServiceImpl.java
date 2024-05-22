@@ -43,28 +43,6 @@ public class EmailServiceImpl implements EmailService{
         }
     }
 
-    @Override
-    @Async
-    public void sendEmailPendingClaimToApprover(List<ClaimEmailDTTO> claimEmailDTOS, String to, String receiver, String mailTemplate, String subject) {
-        try {
-            Context context = new Context();
-            context.setVariable("claims",claimEmailDTOS);
-            context.setVariable("receiver", receiver);
-            context.setVariable("host", hostPage);
-
-            String text = templateEngine.process(mailTemplate, context);
-            MimeMessage message = getMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setFrom(fromEmail);
-            helper.setSubject(subject);
-            helper.setTo(to);
-            helper.setText(text,true);
-            mailSender.send(message);
-        }catch (Exception exception){
-            System.out.println(exception.getMessage());
-        }
-    }
-
     private Context getContext(ClaimEmailDTTO claimEmailDTTO, String receiver, String url, String content) {
         Integer staffId = claimEmailDTTO.getStaffId();
         String staffName = claimEmailDTTO.getStaffName();

@@ -17,8 +17,8 @@ $(document).ready(function () {
 
         cancelAndSubmitModal.find('.modal-title').text('Cancel Claim');
         cancelAndSubmitModal.find('.modal-body').html(`
-            <div>This action will Cancel Claim.</div>
-            <div>Please click ‘OK’ to cancel the claim or ‘Close’ to close the dialog.</div
+            <p>This action will Cancel Claim.</p>
+            <p>Please click ‘OK’ to cancel the claim or ‘Close’ to close the dialog.</p
        `)
 
        $('.btn-okModal').attr('href', '/claim/myClaim/cancel?id='+claimId);
@@ -30,8 +30,8 @@ $(document).ready(function () {
 
         cancelAndSubmitModal.find('.modal-title').text('Submit Claim');
         cancelAndSubmitModal.find('.modal-body').html(`
-            <div>This action will Submit Claim.</div>
-            <div>Please click ‘OK’ to submit the claim or ‘Close’ to close the dialog.</div
+            <p>This action will Submit Claim.</p>
+            <p>Please click ‘OK’ to submit the claim or ‘Close’ to close the dialog.</p
        `)
 
         $('.btn-okModal').attr('href', '/claim/myClaim/submit?id='+claimId);

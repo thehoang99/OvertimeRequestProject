@@ -22,6 +22,7 @@
         <table class="table table-bordered" th:if="${totalPage > 0}">
             <thead>
                 <tr class="text-center">
+                    <th class="bg-body-secondary">#</th>
                     <th class="bg-body-secondary">Claim Id</th>
                     <th class="bg-body-secondary">Claim Date</th>
                     <th class="bg-body-secondary">Project Name</th>
@@ -31,8 +32,9 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                <th:block th:each="c : ${claims}">
+                <th:block th:each="c, iterStat : ${claims}">
                     <tr class="myClaim-row" data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
+                        <td th:text="${(currentPage - 1) * pageSize + iterStat.index + 1}"></td>
                         <td th:text="${c.id}"></td>
                         <td th:text="${#temporals.format(c.date, 'dd/MM/yyyy')}"></td>
                         <td th:text="${c.working.project.name}"></td>

@@ -187,7 +187,7 @@ public class ClaimController {
         if (currentStaff.getRoleId() == 2) {
             String titleName = "Claims for Waiting Pay";
             Page<Claim> claims = claimService.findByStatus(Status.APPROVED, pageNumber, pageSize);
-            modelAddExtract(model, titleName, pageNumber, claims);
+            modelAddExtract(model, titleName, pageNumber, pageSize, claims);
         }
         return "view/claim/finance/financeClaim";
     }
@@ -202,9 +202,9 @@ public class ClaimController {
         if (currentStaff.getRoleId() == 2) {
             String titleName = "Claims for Paid";
             Page<Claim> claims = claimService.findByStatus(Status.PAID, pageNumber, pageSize);
-            modelAddExtract(model, titleName, pageNumber, claims);
+            modelAddExtract(model, titleName, pageNumber, pageSize, claims);
         }
-        return  "view/claim/finance/financeClaim";
+        return "view/claim/finance/financeClaim";
     }
 
     @GetMapping("/detail")
@@ -419,19 +419,20 @@ public class ClaimController {
     private void myClaimExtract(Model model, String titleName, List<Status> statusList, Integer pageNumber, Integer pageSize) {
         Integer staffId = CurrentUserUtils.getStaffInfo().getId();
         Page<Claim> claims = claimService.findClaimByStaffIdAndStatus(staffId, statusList, pageNumber, pageSize);
-        modelAddExtract(model, titleName, pageNumber, claims);
+        modelAddExtract(model, titleName, pageNumber, pageSize, claims);
     }
 
     private void pmClaimExtract(Model model, String titleName, List<Status> statusList, Integer pageNumber, Integer pageSize) {
         Integer staffId = CurrentUserUtils.getStaffInfo().getId();
         Page<Claim> claims = claimService.findClaimByStaffIdAndStatusAndPM(staffId, statusList, pageNumber, pageSize);
-        modelAddExtract(model, titleName, pageNumber, claims);
+        modelAddExtract(model, titleName, pageNumber, pageSize, claims);
     }
 
-    private static void modelAddExtract(Model model, String titleName, Integer pageNumber, Page<Claim> claims) {
+    private static void modelAddExtract(Model model, String titleName, Integer pageNumber, Integer pageSize, Page<Claim> claims) {
         model.addAttribute("claims", claims);
         model.addAttribute("titleName", titleName);
         model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPage", claims.getTotalPages());
     }
 

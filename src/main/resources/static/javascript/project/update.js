@@ -1,8 +1,8 @@
 $(document).ready(function () {
 
-    let startDate = $('#createProject__startDate');
-    let endDate = $('#createProject__endDate');
-    let duration = $('#createProject__duration');
+    let startDate = $('#updateProject__startDate');
+    let endDate = $('#updateProject__endDate');
+    let duration = $('#updateProject__duration');
 
     let today = new Date();
     let todayFormat = today.toISOString().substring(0, 10);
@@ -19,9 +19,9 @@ $(document).ready(function () {
             duration.val('');
         }
     }
+    calculateDuration();
 
-    startDate.val(todayFormat);
-    endDate.attr('min', todayFormat);
+    endDate.attr('min', startDate.val());
 
     startDate.change(function () {
         let newStartDate = startDate.val();
@@ -33,8 +33,7 @@ $(document).ready(function () {
         calculateDuration();
     });
 
-
-    $('#createProjectForm').validate({
+    $('#updateProjectForm').validate({
         errorClass: "is-invalid",
         validClass: "is-valid",
         errorElement: "div",

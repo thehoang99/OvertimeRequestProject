@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Project</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="border-bottom border-1 mb-5 p-2 ">
+            <h1 class="text-warning">Update Project</h1>
+        </div>
+        <div class="border border-1 rounded-3 mb-5 ">
+            <div class="border-bottom border-1 bg-body-secondary">
+                <p class="p-2 m-0 text-danger">Project information to update</p>
+            </div>
+            <div class="p-3 w70">
+                <form id="updateProjectForm" method="post" th:action="@{/project/update}" th:object="${project}">
+                    <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
+                        <p class="alert alert-danger py-2 px-3" th:text="${errorMsg}"></p>
+                    </div>
+                    <input type="hidden" required th:field="*{id}">
+                    <div class="mb-3">
+                        <label class="form-label">Code</label>
+                        <input class="form-control shadow-none bg-body-secondary" th:field="*{code}" required readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input class="form-control shadow-none" th:field="*{name}" required placeholder="Enter the project name" type="text">
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Start Date</label>
+                            <input class="form-control shadow-none" id="updateProject__startDate" name="startDate" th:value="*{startDate}" required type="date">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">End Date</label>
+                            <input class="form-control shadow-none" id="updateProject__endDate" name="endDate" th:value="*{endDate}" required type="date">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Duration</label>
+                        <input class="form-control shadow-none" id="updateProject__duration" disabled required type="text">
+                    </div>
+                    <button class="btn btn-outline-success my-2 px-3 py-2" type="submit">Save</button>
+                    <button class="btn btn-outline-warning m-2 px-3 py-2" type="reset">Reset</button>
+                    <a class="btn btn-outline-secondary my-2 px-3 py-2" th:href="@{/project/view}">Close</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/javascript/project/update.js}"></script>
+</body>
+</html>

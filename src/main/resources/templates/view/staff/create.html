@@ -19,16 +19,16 @@
             <div class="mb-4">
                 <div class="mb-3">
                     <label class="form-label">Staff Name</label>
-                    <input class="form-control shadow-none" th:field="*{name}" required type="text" placeholder="Enter the staff's name">
+                    <input class="form-control shadow-none" th:field="*{name}" required type="text" placeholder="Enter the staff name">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input class="form-control shadow-none" th:field="*{email}" required type="email" placeholder="Enter the staff's email">
+                    <input class="form-control shadow-none" th:field="*{email}" required type="email" placeholder="Enter the staff email">
                     <div class="text-danger" th:errors="*{email}" th:id="${#fields.hasErrors('email')}"></div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input class="form-control shadow-none" th:field="*{password}" required type="password" placeholder="Enter the staff's password">
+                    <input class="form-control shadow-none" th:field="*{password}" required type="password" placeholder="Enter the staff password">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Department</label>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Salary</label>
-                    <input class="form-control shadow-none" th:field="*{salary}" required placeholder="Enter the staff's salary">
+                    <input class="form-control shadow-none" th:field="*{salary}" required placeholder="Enter the staff salary">
                 </div>
                 <button class="btn btn-success my-2 py-2 btn-font-size" type="submit">Save</button>
                 <button class="btn btn-warning my-2 py-2 btn-font-size text-white" type="reset">Reset</button>

@@ -1,9 +1,22 @@
 $(document).ready(function () {
     $('#form-login').validate({
+        errorClass: "is-invalid",
+        validClass: "is-valid",
+        errorElement: "div",
         errorPlacement: function (error, element) {
-           error.insertAfter(element);
+            error.addClass("invalid-feedback");
+            if (element.prop("type") === "checkbox") {
+                error.insertAfter(element.next("label"));
+            } else {
+                error.insertAfter(element);
+            }
         },
-
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass(errorClass).removeClass(validClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).addClass(validClass).removeClass(errorClass);
+        },
         rules: {
             username: {
                 required: true
@@ -12,7 +25,6 @@ $(document).ready(function () {
                 required: true
             }
         },
-
         messages: {
             username: {
                 required: "Please enter Username"
@@ -21,11 +33,9 @@ $(document).ready(function () {
                 required: "Please enter Password"
             }
         },
-
         submitHandler: function (form) {
             form.submit();
         }
-
     });
 
     $('#form-login__email, #form-login__password').change(function () {

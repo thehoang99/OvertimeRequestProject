@@ -112,16 +112,16 @@
                         <textarea class="form-control shadow-none" name="remarks" placeholder="Please enter the remark" required
                                   style="resize: vertical; overflow: auto"></textarea>
                     </div>
-                    <button class="btn btn-success my-2 py-2 btn-font-size" id="btn-approve" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
+                    <button class="btn btn-outline-success my-2 px-3 py-2" id="btn-approve" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
                         Approve
                     </button>
-                    <button class="btn btn-warning my-2 py-2 btn-font-size text-white" id="btn-return" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
+                    <button class="btn btn-outline-warning m-2 px-3 py-2" id="btn-return" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
                         Return
                     </button>
-                    <button class="btn btn-danger my-2 py-2 btn-font-size" id="btn-reject" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
+                    <button class="btn btn-outline-danger my-2 px-3 py-2" id="btn-reject" data-bs-target="#confirmModal" data-bs-toggle="modal" type="button">
                         Reject
                     </button>
-                    <a class="btn btn-secondary" th:href="@{/claim/pendingApproval}">Close</a>
+                    <a class="btn btn-outline-secondary m-2 px-3 py-2" th:href="@{/claim/pendingApproval}">Close</a>
 
                     <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="confirmModal" tabindex="-1">
                         <div class="modal-dialog">

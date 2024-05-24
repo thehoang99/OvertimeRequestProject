@@ -6,195 +6,49 @@
 <body>
 <main>
     <div>
-        <div class="border-bottom border-1 mb-5 p-2">
-            <h1 class="text-warning">Create Project</h1>
+        <div class="border-bottom border-1 mb-5 p-2 ">
+            <h1 class="text-warning">Add Project</h1>
         </div>
-        <div class="border border-1 rounded-3 mb-5">
+        <div class="border border-1 rounded-3 mb-5 ">
             <div class="border-bottom border-1 bg-body-secondary">
                 <p class="p-2 m-0 text-danger">Project Information</p>
             </div>
-            <div class="p-3">
-                <form id="createProject__form" method="post" th:action="@{/project/create}" th:object="${project}">
+            <div class="p-3 w70">
+                <form id="createProjectForm" method="post" th:action="@{/project/create}" th:object="${project}">
                     <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
                         <p class="alert alert-danger py-2 px-3" th:text="${errorMsg}"></p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Code</label>
-                        <input class="form-control shadow-none" id="createProject__code" th:field="*{code}" required
-                               placeholder="Enter the project code" type="text">
+                        <input class="form-control shadow-none" th:field="*{code}" required placeholder="Enter the project code" type="text">
+                        <div class="text-danger" th:errors="*{code}" th:if="${#fields.hasErrors('code')}"></div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Project Name</label>
-                        <input class="form-control shadow-none" id="createProject__name" th:field="*{name}" required
-                               placeholder="Enter the project name" type="text">
+                        <label class="form-label">Name</label>
+                        <input class="form-control shadow-none" th:field="*{name}" required placeholder="Enter the project name" type="text">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Project Duration</label>
-                        <input class="form-control shadow-none" id="createProject__duration" disabled type="text">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Project Start Date</label>
-                        <input class="form-control shadow-none" id="createProject__startDate" th:field="*{startDate}" required
-                               placeholder="Enter the project start date" type="date">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Project End Date</label>
-                        <input class="form-control shadow-none" id="createProject__endDate" th:field="*{endDate}" required
-                               placeholder="Enter the project end date" type="date">
-                    </div>
-                    <div class="border border-1 rounded-3 mb-5">
-                        <div class="border-bottom border-1 bg-body-secondary">
-                            <p class="p-2 m-0 text-danger">Information of staff participating in the project</p>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Start Date</label>
+                            <input class="form-control shadow-none" id="createProject__startDate" th:field="*{startDate}" required type="date">
                         </div>
-                        <div class="mb-3">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Job Rank</th>
-                                        <th scope="col">Start Date</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>
-                                            <div class="autocomplete-dropdown position-relative">
-                                                <input class="autocomplete-staff-id"
-                                                       name="projectWorkingsById[0].workingStaffId"
-                                                       type="hidden">
-                                                <input class="form-control shadow-none reset autocomplete-input"
-                                                       id="form-addProject__workingStaffId-01" name="workingStaffName"
-                                                       placeholder="Enter The Staff Name"
-                                                       type="text">
-                                                <div class="dropdown-menu overflow-auto w-100 autocomplete-results position-absolute mt-2"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <select aria-label="Select Job Rank" class="form-select"
-                                                        disabled id="form-addWorking__jobRank-01" required>
-                                                    <option selected value="1">PM</option>
-                                                </select>
-                                                <input name="projectWorkingsById[0].workingJobRankId"
-                                                       type="hidden" value="1">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <label class="form-label" for="form-addWorking__startDate-01"
-                                                       hidden="hidden"></label>
-                                                <input class="form-control shadow-none reset startDateRecord"
-                                                       id="form-addWorking__startDate-01"
-                                                       name="projectWorkingsById[0].workingStartDate"
-                                                       required
-                                                       type="date">
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>
-                                            <div class="autocomplete-dropdown position-relative">
-                                                <input class="autocomplete-staff-id"
-                                                       name="projectWorkingsById[1].workingStaffId"
-                                                       type="hidden">
-                                                <input class="form-control shadow-none reset autocomplete-input"
-                                                       id="form-addProject__workingStaffId-02" name="workingStaffName"
-                                                       placeholder="Enter The Staff Name"
-                                                       type="text">
-                                                <div class="dropdown-menu overflow-auto w-100 autocomplete-results position-absolute mt-2"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <select aria-label="Select Job Rank" class="form-select"
-                                                        disabled id="form-addWorking__jobRank-02" required>
-                                                    <option selected value="2">QA</option>
-                                                </select>
-                                                <input name="projectWorkingsById[1].workingJobRankId"
-                                                       type="hidden" value="2">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <label class="form-label" for="form-addWorking__startDate-02"
-                                                       hidden="hidden"></label>
-                                                <input class="form-control shadow-none reset startDateRecord"
-                                                       id="form-addWorking__startDate-02"
-                                                       name="projectWorkingsById[1].workingStartDate"
-                                                       required
-                                                       type="date">
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>
-                                            <div class="autocomplete-dropdown position-relative">
-                                                <input class="autocomplete-staff-id"
-                                                       name="projectWorkingsById[2].workingStaffId"
-                                                       type="hidden">
-                                                <input class="form-control shadow-none reset autocomplete-input"
-                                                       id="form-addProject__workingStaffId-03" name="workingStaffName"
-                                                       placeholder="Enter The Staff Name"
-                                                       type="text">
-
-                                                <div class="dropdown-menu overflow-auto w-100 autocomplete-results position-absolute mt-2"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <select aria-label="Select Job Rank" class="form-select jobRankSelect"
-                                                        name="projectWorkingsById[2].workingJobRankId" required>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="autocomplete-dropdown">
-                                                <label class="form-label" for="form-addWorking__startDate-03"
-                                                       hidden="hidden"></label>
-                                                <input class="form-control shadow-none reset startDateRecord"
-                                                       id="form-addWorking__startDate-03"
-                                                       name="projectWorkingsById[2].workingStartDate"
-                                                       required
-                                                       type="date">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="btn-box-addProjectForm d-flex justify-content-around">
-                                                <button class="btn btn-outline-secondary new-record-btn"
-                                                        id="btn-addWorking-newRecord"
-                                                        type="button">
-                                                    New Record
-                                                </button>
-                                                <button class="btn btn-outline-danger delete-record-btn"
-                                                        id="btn-addWorking-deleteRecord"
-                                                        type="button">
-                                                    Delete Record
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="col-6">
+                            <label class="form-label">End Date</label>
+                            <input class="form-control shadow-none" id="createProject__endDate" th:field="*{endDate}" required type="date">
                         </div>
                     </div>
-
+                    <div class="mb-3">
+                        <label class="form-label">Duration</label>
+                        <input class="form-control shadow-none" id="createProject__duration" disabled required type="text">
+                    </div>
                     <button class="btn btn-success my-2 py-2 btn-font-size" type="submit">Save</button>
                     <button class="btn btn-warning my-2 py-2 btn-font-size text-white" type="reset">Reset</button>
                     <a class="btn btn-secondary my-2 py-2 btn-font-size" th:href="@{/project/view}">Close</a>
-
                 </form>
             </div>
         </div>
-
     </div>
 </main>
-<script></script>
+<script th:src="@{/javascript/project/create.js}"></script>
 </body>
 </html>

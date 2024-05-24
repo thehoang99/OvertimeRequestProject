@@ -35,11 +35,11 @@
                             <span th:if="${c.totalHours} > 1" th:text="${c.totalHours} + ' hours'"></span>
                         </td>
                         <td>
-                            <button class="btn btn-primary" id="btn-claimDetail" type="button"
+                            <button class="btn btn-outline-primary" id="btn-claimDetail" type="button"
                                     data-bs-target="#showClaimDetail" data-bs-toggle="modal" th:data-id="${c.id}">
                                 Detail
                             </button>
-                            <a class="btn btn-success" th:href="@{/claim/finance/review(claimId=${c.id})}"
+                            <a class="btn btn-outline-success" th:href="@{/claim/finance/review(claimId=${c.id})}"
                                th:if="${#strings.equals(c.status, 'APPROVED')}">
                                 Review
                             </a>

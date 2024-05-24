@@ -46,20 +46,20 @@
                             <span th:if="${c.totalHours} > 1" th:text="${c.totalHours} + ' hours'"></span>
                         </td>
                         <td>
-                            <button class="btn btn-primary" id="btn-claimDetail" type="button"
+                            <button class="btn btn-outline-primary" id="btn-claimDetail" type="button"
                                     data-bs-target="#showClaimDetail" data-bs-toggle="modal" th:data-id="${c.id}">
                                 Detail
                             </button>
-                            <button class="btn btn-success" id="btn-submitClaim" type="button"
+                            <button class="btn btn-outline-success" id="btn-submitClaim" type="button"
                                     data-bs-target="#cancelAndSubmitClaim" data-bs-toggle="modal" th:data-id="${c.id}"
                                     th:if="${#strings.equals(c.status, 'DRAFT')}">
                                 Submit
                             </button>
-                            <a class="btn btn-warning text-white" th:if="${#strings.equals(c.status, 'DRAFT')}"
+                            <a class="btn btn-outline-warning" th:if="${#strings.equals(c.status, 'DRAFT')}"
                                     th:href="@{/claim/myClaim/update(id=${c.id})}">
                                 Update
                             </a>
-                            <button class="btn btn-danger" id="btn-cancelClaim" type="button"
+                            <button class="btn btn-outline-danger" id="btn-cancelClaim" type="button"
                                     data-bs-target="#cancelAndSubmitClaim" data-bs-toggle="modal" th:data-id="${c.id}"
                                     th:if="${#strings.equals(c.status, 'DRAFT')}">
                                 Cancel

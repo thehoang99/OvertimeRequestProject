@@ -3,6 +3,7 @@ package com.orp.services.impl;
 import com.orp.model.Project;
 import com.orp.repositories.ProjectRepository;
 import com.orp.services.ProjectService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +32,6 @@ public class ProjectServiceImpl implements ProjectService {
                 return null;
             }
         }
-
         return projectRepository.save(project);
     }
 
@@ -49,4 +49,25 @@ public class ProjectServiceImpl implements ProjectService {
         }
         return false;
     }
+
+    @Override
+    public Project update(Project project, BindingResult result) {
+        if (project == null || result == null) {
+            return null;
+        }
+
+        Project projectDB = projectRepository.findById(project.getId()).orElse(null);
+        if (projectDB == null) {
+            return null;
+        }
+
+        BeanUtils.copyProperties(project, projectDB);
+        return projectRepository.save(projectDB);
+    }
+
+    @Override
+    public Project findById(Integer id) {
+        return projectRepository.findById(id).orElse(null);
+    }
+
 }

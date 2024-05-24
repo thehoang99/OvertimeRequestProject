@@ -83,5 +83,54 @@ public class ProjectController {
         return "view/project/view";
     }
 
+    @GetMapping("/update")
+    public String updateProjectUI(
+            @RequestParam(name = "id", required = false) Integer projectId,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (projectId != null) {
+            Project project = projectService.findById(projectId);
+            if (project != null) {
+                model.addAttribute("project", project);
+                return "view/project/update";
+            }
+        }
+        model.addAttribute("project", new Project());
+        return "view/project/update";
+    }
+
+    @PostMapping("/update")
+    public String updateProjectDB(
+            @ModelAttribute(name = "project") Project project,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        boolean isError = false;
+        if (result.hasErrors()) {
+            isError = true;
+        } else {
+            Project projectDB = projectService.update(project, result);
+            if (projectDB == null) {
+                isError = true;
+            }
+        }
+
+        if (isError) {
+            Project oldProject = projectService.findById(project.getId());
+            if (oldProject != null) {
+                model.addAttribute("project", oldProject);
+            } else {
+                model.addAttribute("project", new Project());
+            }
+            model.addAttribute("errorMsg", "There are a few errors during project update process!");
+            return "view/project/update";
+        }
+
+        redirectAttributes.addFlashAttribute("successMsg", "Updated the project successfully!");
+        return "redirect:/project/view";
+    }
+
 
 }

@@ -53,10 +53,23 @@ $(document).ready(function () {
     });
 
     $('#updateClaimForm').validate({
+        errorClass: "is-invalid",
+        validClass: "is-valid",
+        errorElement: "div",
         errorPlacement: function (error, element) {
-            error.insertAfter(element);
+            error.addClass("invalid-feedback");
+            if (element.prop("type") === "checkbox") {
+                error.insertAfter(element.next("label"));
+            } else {
+                error.insertAfter(element);
+            }
         },
-
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass(errorClass).removeClass(validClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).addClass(validClass).removeClass(errorClass);
+        },
         rules: {
             status: {
                 required: true
@@ -80,7 +93,6 @@ $(document).ready(function () {
                 required: true
             }
         },
-
         messages: {
             status: {
                 required: "Claim status must be filled"
@@ -104,7 +116,6 @@ $(document).ready(function () {
                 required: "Remarks must be filled"
             }
         },
-
         submitHandler: function (form) {
             form.submit();
         }

@@ -77,12 +77,13 @@
 
                     <div class="mb-3">
                         <label class="form-label">Remarks</label>
-                        <textarea class="form-control shadow-none" th:field="*{remarks}" required style="resize: vertical; overflow: auto"></textarea>
+                        <textarea class="form-control shadow-none" th:field="*{remarks}" required style="resize: vertical; overflow: auto"
+                                  placeholder="Enter the remarks"></textarea>
                     </div>
 
-                    <button class="btn btn-success my-2 py-2 btn-font-size" type="submit">Save</button>
-                    <button class="btn btn-warning my-2 py-2 btn-font-size text-white" id="btn-reset" type="reset">Reset</button>
-                    <a class="btn btn-secondary my-2 py-2 btn-font-size" th:href="@{/claim/myDraft}">Close</a>
+                    <button class="btn btn-outline-success my-2 px-3 py-2" type="submit">Save</button>
+                    <button class="btn btn-outline-warning m-2 px-3 py-2" type="reset">Reset</button>
+                    <a class="btn btn-outline-secondary my-2 px-3 py-2" th:href="@{/claim/myDraft}">Close</a>
 
                 </form>
             </div>

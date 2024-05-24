@@ -83,4 +83,5 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
 
     @Query("SELECT c.working.staff FROM Claim c WHERE c.id = :id")
     Staff findStaffByClaimId(Integer id);
+
 }

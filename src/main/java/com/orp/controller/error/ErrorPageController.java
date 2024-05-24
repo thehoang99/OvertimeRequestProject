@@ -1,4 +1,4 @@
-package com.orp.controller;
+package com.orp.controller.error;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;

@@ -4,6 +4,9 @@ import com.orp.model.Project;
 import com.orp.repositories.ProjectRepository;
 import com.orp.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -30,5 +33,20 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         return projectRepository.save(project);
+    }
+
+    @Override
+    public Page<Project> findAll(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return projectRepository.findAll(pageable);
+    }
+
+    @Override
+    public boolean cancel(Integer projectId) {
+        if (projectRepository.existsById(projectId)) {
+            projectRepository.deleteById(projectId);
+            return true;
+        }
+        return false;
     }
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Staff to Project</title>
+</head>
+<body>
+<main>
+    <div class="border-bottom border-1 mb-5 p-2">
+        <h1 class="text-warning">Add Staff To Project</h1>
+    </div>
+    <div class="border border-1 rounded-3 mb-5">
+        <div class="border-bottom border-1 bg-body-secondary">
+            <p class="p-2 m-0 text-danger">Staff Information</p>
+        </div>
+        <form class="p-4" id="createWorkingForm" method="post" th:action="@{/working/create}" th:object="${working}">
+            <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
+                <p class="alert alert-danger py-2 px-3" th:text="${errorMsg}"></p>
+            </div>
+            <div class="mb-4">
+                <div class="mb-3">
+                    <label class="form-label">Project Name</label>
+                    <select class="form-select shadow-none" id="createWorking__projectSelect" th:field="*{projectId}">
+                        <option th:each="project : ${projects}" th:text="${project.name}" th:value="${project.id}"
+                                th:data-start-date="${project.startDate}" th:data-end-date="${project.endDate}">
+                        </option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Staff Name</label>
+                    <select class="form-select shadow-none" th:field="*{staffId}">
+                        <option th:each="staff : ${staffs}" th:text="${staff.name}" th:value="${staff.id}"></option>
+                    </select>
+                    <div class="text-danger" th:errors="*{staffId}" th:id="${#fields.hasErrors('staffId')}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rank In Project</label>
+                    <select class="form-select shadow-none" th:field="*{jobRankId}">
+                        <option th:each="rank : ${jobRanks}" th:text="${rank.name}" th:value="${rank.id}"></option>
+                    </select>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label">Join Date</label>
+                        <input class="form-control shadow-none" id="createWorking__joinDate" th:field="*{startDate}" required type="date">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Left Date</label>
+                        <input class="form-control shadow-none" id="createWorking__leftDate" th:field="*{endDate}" type="date">
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-success my-2 px-3 py-2" type="submit">Save</button>
+                <button class="btn btn-outline-warning m-2 px-3 py-2" type="reset">Reset</button>
+                <a class="btn btn-outline-secondary my-2 px-3 py-2" th:href="@{/working/view}">Close</a>
+            </div>
+        </form>
+    </div>
+</main>
+<script th:src="@{/javascript/working/create.js}"></script>
+</body>
+</html>

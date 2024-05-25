@@ -60,9 +60,10 @@ $(document).ready(function () {
         "btn-myClaims": [/\/claim\/my/, /\/claim\/update/],
         "btn-claimsForApproval": [/\/claim\/pendingApproval/, /\/claim\/approvedOrPaid/],
         "btn-claimsForFinance": [/\/claim\/approved/, /\/claim\/paid/],
-        "btn-adminManagement": [/\/staff/, /\/project/],
+        "btn-adminManagement": [/\/staff/, /\/project/, /\/working/],
         "btn-staffInformation": [/\/staff/],
-        "btn-projectInformation": [/\/project/]
+        "btn-projectInformation": [/\/project/],
+        "btn-workingInformation": [/\/working/]
     };
 
     Object.entries(patterns).forEach(([buttonId, patternURLs]) => {

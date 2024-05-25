@@ -1,5 +1,6 @@
 package com.orp.services.impl;
 
+import com.orp.dto.ProjectCreateWorkingDTO;
 import com.orp.model.Project;
 import com.orp.repositories.ProjectRepository;
 import com.orp.services.ProjectService;
@@ -43,6 +44,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean cancel(Integer projectId) {
+        if (projectId == null) {
+            return false;
+        }
+
         if (projectRepository.existsById(projectId)) {
             projectRepository.deleteById(projectId);
             return true;
@@ -68,6 +73,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project findById(Integer id) {
         return projectRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<ProjectCreateWorkingDTO> findAllName() {
+        return projectRepository.findAllName();
     }
 
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<div class="mb-3">
+    <h6>-- Staff Information --</h6>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th class="bg-body-secondary">Staff Name</th>
+                <th class="bg-body-secondary">Role</th>
+                <th class="bg-body-secondary">Join Date</th>
+                <th class="bg-body-secondary">Left Date</th>
+                <th class="bg-body-secondary">Action</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <th:block th:each="w : ${workings}">
+                <tr class="myClaim-row" data-rowid="1" data-target="#exampleModalCenter" data-toggle="modal">
+                    <td th:text="${w.staff.name}"></td>
+                    <td th:text="${w.jobRank.name}"></td>
+                    <td th:text="${#temporals.format(w.startDate, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(w.endDate, 'dd/MM/yyyy')}"></td>
+                    <td>
+                        <a class="btn btn-outline-warning" th:href="@{/working/update(id=${w.id})}">
+                            Update
+                        </a>
+                        <button class="btn btn-outline-danger" id="btn-deleteWorking" type="button"
+                                data-bs-target="#deleteWorking" data-bs-toggle="modal" th:data-id="${w.id}">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+</div>
+</html>

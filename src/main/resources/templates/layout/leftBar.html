@@ -113,7 +113,7 @@
                     <button class="btn text-primary rounded-0 border-bottom border-top border-1 py-3 w-100 text-start dropdown-toggle d-flex justify-content-between align-items-center px-3"
                             id="btn-projectInformation" data-bs-target="#projectInformation" data-bs-toggle="collapse" type="button">
                         <span>
-                            <i class="bi bi-kanban"></i>
+                            <i class="bi bi-folder"></i>
                             <span class="mx-3">Project Information</span>
                         </span>
                     </button>
@@ -129,7 +129,28 @@
                             <span>View</span>
                         </a>
                     </div>
-                </div> 
+                </div>
+                <div>
+                    <button class="btn text-primary rounded-0 border-bottom border-top border-1 py-3 w-100 text-start dropdown-toggle d-flex justify-content-between align-items-center px-3"
+                            id="btn-workingInformation" data-bs-target="#workingInformation" data-bs-toggle="collapse" type="button">
+                        <span>
+                            <i class="bi bi-calendar"></i>
+                            <span class="mx-3">Working Information</span>
+                        </span>
+                    </button>
+                    <div class="collapse" id="workingInformation">
+                        <a class="btn text-primary rounded-0 border-bottom border-top border-1 py-3 w-100 text-start px-5" id="btn-workingInformation-create"
+                           th:href="@{/working/create}" type="button">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>Add Staff to Project</span>
+                        </a>
+                        <a class="btn text-primary rounded-0 border-bottom border-top border-1 py-3 w-100 text-start px-5" id="btn-workingInformation-view"
+                           th:href="@{/working/view}" type="button">
+                            <i class="bi bi-table"></i>
+                            <span>View</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

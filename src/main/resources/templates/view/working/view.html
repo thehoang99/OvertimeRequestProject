@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Working</title>
+</head>
+<body>
+<main>
+    <div>
+        <div class="border-bottom border-1 mb-5 p-2">
+            <h1 class="text-warning">View Working</h1>
+        </div>
+        <div class="border border-1 rounded-3 mb-5">
+            <div class="border-bottom border-1 bg-body-secondary">
+                <p class="p-2 m-0 text-danger">Working Information</p>
+            </div>
+            <div class="p-4">
+                <div class="mb-3" th:if="${not #strings.isEmpty(successMsg)}">
+                    <p class="alert alert-success py-2 px-3" th:text="${successMsg}"></p>
+                </div>
+                <div class="row mb-3">
+                    <h6 class="col-2">Project Name:</h6>
+                    <div class="col-10">
+                        <select class="form-select d-inline shadow-none col-6" id="viewWorking__project" name="projectId">
+                            <option disabled selected>---Select the project---</option>
+                            <option th:each="project : ${projects}" th:text="${project.name}" th:value="${project.id}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="working-detail"></div>
+
+                <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="deleteWorking" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-warning">Delete Working</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>This action will Delete Working.</p>
+                                <p>Please click ‘OK’ to delete the working or ‘Close’ to close the dialog.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                                <a class="btn btn-primary btn-okModal">OK</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/javascript/working/view.js}"></script>
+</body>
+</html>

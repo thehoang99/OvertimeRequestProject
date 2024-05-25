@@ -18,4 +18,6 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
     @Query("SELECT w.staff FROM Working w WHERE w.projectId = :projectId AND w.jobRankId = 1")
     Staff findPMByProjectId(Integer projectId);
 
+   List<Working> findByProjectId(Integer projectId);
+
 }

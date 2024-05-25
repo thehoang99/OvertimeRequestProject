@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" th:replace="~{layout/template::areas(~{::title}, ~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Working</title>
+</head>
+<body>
+<main>
+    <div class="border-bottom border-1 mb-5 p-2">
+        <h1 class="text-warning">Update Working</h1>
+    </div>
+    <div class="border border-1 rounded-3 mb-5">
+        <div class="border-bottom border-1 bg-body-secondary">
+            <p class="p-2 m-0 text-danger">Working Information</p>
+        </div>
+        <form class="p-4" id="updateWorkingForm" method="post" th:action="@{/working/update}" th:object="${working}">
+            <div class="mb-3" th:if="${not #strings.isEmpty(errorMsg)}">
+                <p class="alert alert-danger py-2 px-3" th:text="${errorMsg}"></p>
+            </div>
+            <div class="mb-4">
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{projectId}">
+                <input type="hidden" th:field="*{staffId}">
+                <div class="mb-3">
+                    <label class="form-label">Project Name</label>
+                    <p class="form-control shadow-none bg-body-secondary" id="selectedProject" th:text="*{project.name}"
+                       th:data-start-date="*{project.startDate}" th:data-end-date="*{project.endDate}" ></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Staff Name</label>
+                    <p class="form-control shadow-none bg-body-secondary" th:text="*{staff.name}"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rank In Project</label>
+                    <select class="form-select shadow-none" name="jobRankId">
+                        <option selected th:text="*{jobRank.name}"></option>
+                        <option th:each="rank : ${jobRanks}"  th:if="${rank.name != working.jobRank.name}" th:text="${rank.name}" th:value="${rank.id}"></option>
+                    </select>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label">Join Date</label>
+                        <input class="form-control shadow-none" id="updateWorking__joinDate" name="startDate" th:value="*{startDate}" required type="date">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Left Date</label>
+                        <input class="form-control shadow-none" id="updateWorking__leftDate" name="endDate" th:value="*{endDate}" type="date">
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-success my-2 px-3 py-2" type="submit">Save</button>
+                <button class="btn btn-outline-warning m-2 px-3 py-2" type="reset">Reset</button>
+                <a class="btn btn-outline-secondary my-2 px-3 py-2" th:href="@{/working/view}">Close</a>
+            </div>
+        </form>
+    </div>
+</main>
+<script th:src="@{/javascript/working/update.js}"></script>
+</body>
+</html>

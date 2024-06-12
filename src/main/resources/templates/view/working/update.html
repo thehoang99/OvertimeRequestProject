@@ -32,8 +32,10 @@
                 <div class="mb-3">
                     <label class="form-label">Rank In Project</label>
                     <select class="form-select shadow-none" name="jobRankId">
-                        <option selected th:text="*{jobRank.name}"></option>
-                        <option th:each="rank : ${jobRanks}"  th:if="${rank.name != working.jobRank.name}" th:text="${rank.name}" th:value="${rank.id}"></option>
+<!--                        <option selected th:text="*{jobRank.name}"></option>-->
+                        <option th:each="rank : ${jobRanks}"  th:text="${rank.name}" th:value="${rank.id}"
+                                th:attr="selected=${rank.name == working.jobRank.name} ? 'selected' : null"
+                        ></option>
                     </select>
                 </div>
                 <div class="row mb-3">
